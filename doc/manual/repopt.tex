@@ -1,0 +1,359 @@
+\chapter{Manual for REPOPT}
+\label{chap:repopt}
+
+``\textbf{repopt}'' is a program to optimize DFTB repulsive potentials.  To
+run the program, type: 
+
+{\scriptsize repopt rep.inp}
+
+where \textbf{repopt} is program name and \textbf{rep.inp} is name of the
+input file. The input file is organized in ``block'' sections. Each section
+begins with ``\textbf{\$blockname:}'' and end with ``\textbf{\$end:}''.
+`\#' is the comment character. Everything after `\#' will be skipped.
+
+\section{Required Inputs}
+
+The general ``block'' format of required  sections is showed as following
+
+\begin{b4table}
+\$blockname:      &         &  & \\
+  \quad keyword\_1& value\_1&  & \\ 
+  \quad \dots     & \dots   &  & \\  
+  \quad keyword\_n& value\_n&  & \\ 
+\$end             &         &  & \\
+\end{b4table}
+
+Following input block must be presented  in all kind of running job.
+
+\subsection{\$system:}
+
+\begin{b4tableh}
+  dftb\_version  & string  &       &  dftb+   \\
+  idecompose     & integer & 1:7   &  6       \\
+  ilmsfit        & integer & 1:4   &  4       \\
+  nreplicate     & integer &$\geq$1&  1       \\
+\end{b4tableh}
+
+\begin{description}
+  \item[\is{dftb\_version}] Executable dftb-program 
+  \item[\is{idecompose   }] Select decomposition method from EIGEN library:\\
+       1 => ldlt \\
+       2 => partialPivLu \\
+       3 => fullPivLu \\
+       4 => householderQr \\
+       5 => colPivHouseholderQr \\
+       6 => fullPivHouseholderQr \\
+       7 => completeOrthogonalDecomposition \\
+                            Please check the
+                            \href{http://eigen.tuxfamily.org/dox/group__TutorialLinearAlgebra.html}{website}
+                            for more information. \\
+  \item[\is{ilmsfit      }] Select  regression method from EIGEN library:\\
+       1 => householderQr \\
+       2 => colPivHouseholderQr \\
+       3 => fullPivHouseholderQr \\
+       4 => bdcSvd \\
+                            Please check the
+                            \href{http://eigen.tuxfamily.org/dox/group__LeastSquares.html}{website}
+                            for more information. \\
+
+  \item[\is{nreplicate   }] Number of the fitting will be replicated.
+                            \textbf{nreplicate} should be 1. Larger than 1
+                            only for testing purpose to measure the effect
+                            of decomposition and regression methods on the
+                            computing time. 
+\end{description}
+
+\textbf{Example:}
+\begin{b4table}
+  \$system:            &         &  &   \\
+  \quad dftb\_version  &  dftb+  &  &   \\
+  \quad idecompose     &  6      &  &   \\
+  \quad ilmsfit        &  4      &  &   \\
+  \quad nreplicate     &  1      &  &   \\
+  \$end:               &         &  &   \\
+\end{b4table}
+
+\subsection{\$genetic\_algorithm:}
+
+\begin{b4tableh}
+  ga             & bool    &  0|1  &   1       \\
+  runtest        & bool    &  0|1  &   0       \\
+  score\_type    & integer & 1|2|4 &   2       \\
+  read\_spline   & bool    &  0|1  &   1       \\
+  popsizemax     & integer &$\geq$1&   1000    \\
+  preserved\_num & integer &$\geq$0&   100     \\
+  destroy\_num   & integer &$\geq$0&   10      \\
+  popsizemin     & integer &$\geq$1&   2       \\
+  ngen           & integer &$\geq$0&   1000    \\
+  pmut           & integer &0.0:1.0&   0.02    \\
+  pcross         & integer &0.0:1.0&   0.90    \\
+  grid\_update   & bool    &  0|1  &   0       \\
+\end{b4tableh}
+
+\begin{description}
+  \item[\is{ga             }] switch on or off genetic algorithm
+  \item[\is{runtest        }] switch on or off testing job
+  \item[\is{score\_type    }] set scoring function to:\\
+       1 => sum of absolute deviation  \\
+       2 => sum of squared  deviation  \\
+       4 => sum of quartic  deviation\\
+  \item[\is{read\_spline   }] how ``grid'' input file would be used:\\
+       0 => only read the cutoff and count the number of knots from
+                              ``grid'' input file\\
+       1 => use all knots in the ``grid'' input file as initial guess\\
+  \item[\is{popsizemax     }] set the initial and maximum population size for GA. 
+  \item[\is{preserved\_num }] set the number of best individuals would be
+                              kept from ``n-1'' to ``n'' generation.
+  \item[\is{destroy\_num   }] set the number individuals be removed every
+                              generation. If greater than 0, the population size 
+                              will be reduced generation by generation. 
+  \item[\is{popsizemin     }] set the final and minimum population size for GA. 
+                              \textbf{popsizemin} is used only if \textbf{destroy\_num}$\geq$1.
+  \item[\is{ngen           }] set the number of generation for GA. 
+  \item[\is{pmut           }] set the mutation probability for GA. 
+  \item[\is{pcross         }] set the crossover probability for GA. 
+  \item[\is{grid\_update   }] How ``grid'' input file would be updated:\\ 
+       0 => leave the ``grid'' input file untouched.\\
+       1 => the ``grid'' input file is updated at the end of the GA optimization 
+                              using the best found knots.
+\end{description}
+\textbf{Example:}
+\begin{b4table}
+  \$genetic\_algorithm:       &            &&  \\
+  \quad ga                    &   1        &&  \\
+  \quad runtest               &   0        &&  \\
+  \quad score\_type           &   2        &&  \\
+  \quad read\_spline          &   1        &&  \\
+  \quad popsizemax            &   1000     &&  \\
+  \quad preserved\_num        &   100      &&  \\
+  \quad destroy\_num          &   10       &&  \\
+  \quad popsizemin            &   2        &&  \\
+  \quad ngen                  &   1000     &&  \\
+  \quad pmut                  &   0.02     &&  \\
+  \quad pcross                &   0.90     &&  \\
+  \quad grid\_update          &   0        &&  \\
+  \$end:                      &            &&  \\
+\end{b4table}
+
+\section{Optional Inputs}
+
+The general ``block'' format of required  sections is showed as following
+
+\begin{b4table}
+\$blockname:          &              &        &             \\
+  \quad entry\_name\_1& option\_1\_1 & \dots  & option\_1\_m\\ 
+  \quad \dots         & \dots        & \dots  & \dots       \\  
+  \quad entry\_name\_n& option\_n\_1 & \dots  & option\_n\_m\\ 
+\$end                 &              &        &             \\
+\end{b4table}
+
+Following input blocks in optional, depending on the desired job.
+
+\subsection{{\$}element\_types:}
+\begin{b4table}
+  String               & Real(a.u.)       & &  \\
+ \hline                                       
+  element\_name\_1     & atomic\_energy\_1& &  \\
+  \dots                & \dots            & &  \\
+  element\_name\_n     & atomic\_energy\_n& &  \\
+\end{b4table}
+
+\begin{description}
+  \item[\is{element\_name }] name of fitting element, must be two lower case 
+                             letters characters long. The underscore
+                             character `\_' is added if element name has
+                             only one character.
+
+  \item[\is{atomic\_energy}] Atomic energy in a.u\@. for the corresponding
+                             fitting element. 
+\end{description}
+
+Note: if \textbf{element\_name} is provided, \textbf{atomic\_energy}  must
+be provided also\@. \textbf{atomic\_energy} (can be calculated by DFT) is
+needed to fit atomization energy. If \textbf{element\_name} is not listed,
+the \textbf{atomic\_energy} will be optimized. You can interpret the
+meaning of \textbf{atomic\_energy} as: If \textbf{atomic\_energy} is
+provided, the absolute atomization energy will be fitted (by fitting atomization
+energy). If \textbf{atomic\_energy} is optimized (not provided), the
+relative atomization energy (reaction energy) will be fitted (by fitting atomization energy).
+
+\textbf{Example:}
+\begin{b4table}
+  \$element\_types: &            &&  \\
+  \quad h\_         & -0.256789  &&  \\
+  \quad c\_         & -0.456789  &&  \\
+  \$end:            &            &&  \\
+\end{b4table}
+
+\subsection{{\$}repulsive\_potentials:}
+
+\begin{b7table}
+  string    &Real(\AA)& string         & Real(\AA) & integer       & integer & 0|1      \\  
+  \hline
+  name\_1   &min\_r   & knot-vector    & min\_step & spline order  & smooth  & negative?\\  
+  \dots     & \dots   & \dots          &   \dots   &    \dots      &  \dots  & \dots    \\
+  name\_n   &min\_r   & knot-vector    & min\_step & spline order  & smooth  & negative?\\  
+\end{b7table}
+
+\begin{description}
+  \item[\is{name        }] name of fitting potential
+  \item[\is{min\_r      }] limit the small knot. The small knot must larger than
+                           or equal to shortest bond length 
+                           min($R_{bond}$) - \text{min\_r}
+  \item[\is{knot-vector }] name of the file containing division points in 
+                           the format (in \AA):\\
+                           {\scriptsize
+                           knot\_1 \\
+                           \dots   \\
+                           knot\_n \\
+                           cutoff}\\
+                           The number of knot will be counted from the not-vector
+  \item[\is{min\_step   }] set the smallest difference between knot
+  \item[\is{spline order}] the order of spline function to be used 
+                           (currently only support 4th order)
+  \item[\is{smooth      }] smoothing level of that potential\\
+       0 => constrain on potential energy\\
+       1 => constrain on the first derivative of energy\\
+       2 => constrain on the second derivative of energy\\
+       3 => constrain on the third derivative of energy\\
+  \item[\is{negative?   }] and allowance the potential to be attractive or not.\\
+       0 => repulsive potential energy must be always positive
+       1 => repulsive potential energy can be negative\\
+\end{description}
+
+\textbf{Example:}
+\begin{b7table}
+  \$repulsive\_potentials: &&            &         &       &     &   \\    
+  \quad h\_h\_  & 0.2   & grids/hh.grdx  &   0.05  &    4  &  2  & 0 \\
+  \quad c\_h\_  & 0.3   & grids/ch.grdx  &   0.05  &    4  &  2  & 1 \\
+  \quad c\_c\_  & 0.3   & grids/cc.grdx  &   0.30  &    4  &  2  & 1 \\ 
+  \$end         &       &                &         &       &     &   \\
+\end{b7table}
+
+\subsection{{\$}compounds:}
+
+\begin{b7table}
+  string    &Real(kcal/mol) & string  & Real      &  string   & 0|string    & integer     \\  
+  \hline
+  structure1& $E^{at}$      & eweight & fweight   &  dftbinp  & forceinput  & placeholder \\ 
+  \dots     & \dots         & \dots   &   \dots   &    \dots  &  \dots      & \dots       \\
+  structuren& $E^{at}$      & eweight & fweight   &  dftbinp  & forceinput  & placeholder \\ 
+\end{b7table}
+
+list of filenames for geometries of the fitting molecular. 
+
+\begin{description}
+  \item[\is{name        }] file name for geometry, the files need to be in 
+                           xyz-format 
+  \item[\is{$E^{at}$    }] reference atomization energy of the molecule. The atomization energy is defined as:
+  
+  \begin{equation*}
+      E^{at} = -E^{tot} + \sum_{i=1}^{N_{atom}}{E_i^{atom}}
+  \end{equation*}
+  
+  \item[\is{eweight     }] weights for energy equations
+  \item[\is{fweight     }] weights for force equations
+  \item[\is{dftbinp     }] input-file to run a single point energy and force 
+                           calculation using the dftb 
+  \item[\is{forceinput  }] for an equilibrium structure, should be a ``0'', 
+                           otherwise a reference force file can be specified 
+                           which is formatted as (in a.u.):\\
+                           {\scriptsize\\
+                           Ref\_Force-Atom\_1\_X  Ref\_Force-Atom\_1\_Y  Ref\_Force-Atom\_1\_Z \\
+                           \dots \\
+                           Ref\_Force-Atom\_n\_X  Ref\_Force-Atom\_n\_Y  Ref\_Force-Atom\_n\_Z \\
+                           }                                                                                                                           
+  \item[\is{placeholder }] for developement only, must be `0' for now
+\end{description}              
+
+\textbf{Example:}
+\begin{b7table}
+  \$compounds:            &       &   &   &                      &                    &   \\  
+  \quad path/h2.xyz       & 109.9 & 1 & 1 &  path/dftb\_inp1.hsd &  0                 & 0 \\ 
+  \quad path/ch4.xyz      & 420.1 & 1 & 1 &  path/dftb\_inp2.hsd &  0                 & 0 \\ 
+  \quad path/h3cch3.xyz   & 712.0 & 1 & 1 &  path/dftb\_inp2.hsd &  0                 & 0 \\ 
+  \quad path/h2\_d0.1.xyz & 000.0 & 0 & 1 &  path/dftb\_inp2.hsd &  path/hh\_d0.1.frc & 0 \\ 
+  \$end                   &       &   &   &                      &                    &   \\
+\end{b7table}
+
+
+\subsection{{\$}definition\_reactions:}
+
+For specifying reaction equations 
+
+\begin{b4table}
+  string           & string          &  string             &   \\  
+  \hline
+  abbreviation     & filename        &  dftbinp            &   \\
+  \dots            & \dots           &  \dots              &   \\
+  abbreviation     & filename        &  dftbinp            &   \\
+\end{b4table}
+
+\begin{description}
+  \item[\is{abbreviation}] abbrev name for a geometry
+  \item[\is{filename    }] file name for the geometry, the files need to be in 
+                           xyz-format 
+  \item[\is{dftbinp     }] input-file to run a single point energy 
+                           calculation using the DFTB
+\end{description}          
+
+\textbf{Example:}
+\begin{b4table}
+  \$definition\_reactions:&                 &                      &   \\  
+  \quad  h2               & path/h2.xyz     &  path/dftb\_inp1.hsd &   \\  
+  \quad  ch4              & path/ch4.xyz    &  path/dftb\_inp2.hsd &   \\  
+  \quad  h3cch3           & path/h3cch3.xyz &  path/dftb\_inp2.hsd &   \\  
+  \$end                   &                 &                      &   \\
+\end{b4table}
+
+\subsection{{\$}reactions:}
+
+\begin{b8table}
+  integer     & string        &       & integer  & string        &  string & Real(kcal/mol)&  Real      \\  
+  \hline
+  coeff       & abbreviation  & \dots & coeff    & abbreviation  &  ->     & reactionenergy&  reaweight \\  
+  \dots       & \dots         & \dots & \dots    & \dots         &  ->     & \dots         &  \dots     \\  
+  coeff       & abbreviation  & \dots & coeff    & abbreviation  &  ->     & reactionenergy&  reaweight \\  
+\end{b8table}
+
+\begin{description}
+  \item[\is{coeff         }] reaction coefficient\\
+       if positive => reactant\\
+       if negative => product 
+  \item[\is{abbreviation  }] defined in the \$definition\_reactions: block
+  \item[\is{reactionenergy}] reaction energy
+  \item[\is{reaweight     }] weight for reaction energy equations
+\end{description}          
+
+\textbf{Example:}
+\begin{b9table}
+  \$reactions:   &           &    &      &     &      &    &         &      \\  
+  \quad       +1 &  h3cch3   & +1 &  h2  &  -2 & ch4  & -> & -18.33  &  1.0 \\  
+  \$end          &           &    &      &     &      &    &         &      \\  
+\end{b9table}
+
+\section{Output}
+
+The output of a successful \textbf{repopt} contains:
+
+\begin{description}
+  \item[\is{scoring function      }] scoring function as a function of generation
+  \item[\is{input                 }] interpreted input, a list of all distances 
+                                     appearing within the reference geometries 
+                                     sorted by atom type pair.
+  \item[\is{technical information }] a list of number of fitting equation, number 
+                                     of free variables\dots 
+  \item[\is{summary of fitting    }] summary of the MSE, MUE, and RMS
+  \item[\is{residual in detail    }] residuals for each equation predicted by the 
+                                     fitted parameters in comparison to the 
+                                     reference are listed.
+  \item[\is{fitted atomic energies}] fitted atomic energies if they are optimized 
+  \item[\is{repulsive potentials  }] the repulsive potentials are given in a 
+                                     format of the ``Spline'' format.
+\end{description}
+
+If there is no error, \textbf{repopt} ends with a statement ``repopt normal
+termination''.  Any warnings concerning the fit will appear after
+\textbf{\#ga end!}.
+
+\section{Tips}

@@ -1,0 +1,2 @@
+icpc -std=c++11 -O3 -DEIGEN_USE_MKL_ALL  -I../eigen3.37 -c ord2abSpl.cpp  
+icpc -o ord2abSpl ord2abSpl.o  -mkl 

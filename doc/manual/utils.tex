@@ -1,0 +1,69 @@
+\chapter{Utility Tools}
+
+In the following section, some utility tools will be explained. These
+tools were originally developed by Michael Gaus and were later modified by
+the author.
+
+\section{Convert \textbf{repopt}-output to skf-files}
+
+The bash-scripts \textbf{rep2XabSpl} and \textbf{xabSpl2spl} are available
+in the ``utils'' directory as well as the C++ program \textbf{ord2abSpl}
+which is called by the \textbf{xabSpl2spl} script. 
+
+\begin{description}
+  \item[\is{rep2XabSpl}] Usage: \textbf{rep2XabSpl repout-output-file} \\
+                         The \textbf{rep2XabSpl} extracts the Spline of 
+                         repulsive potentials from the output-file and
+                         writes it in separate files. The ending of
+                         the files are XabSpl. 
+  \item[\is{xabSpl2spl}] Usage: \textbf{xabSpl2spl XabSpl-file skf-electronic-file 1}\\ 
+                         The \textbf{xabSpl2spl} script combines one XabSpl
+                         file with skf-electronic-file into the final skf-file.  
+  \item[\is{ord2abSpl }] called by the \textbf{xabSpl2spl} 
+\end{description} 
+
+For a short description of all options run \textbf{rep2XabSpl} or
+\textbf{xabSpl2spl} without any arguments.
+
+\textbf{Example}\\ 
+{\scriptsize
+\noindent\# doing the rep fitting\\
+repopt rep.in $>$ rep.out \\
+
+\noindent\# extract Spline for H-H\\
+rep2XabSpl rep.out \\
+mv h\_h\_.4abSpl hh.4abSpl \\
+
+\noindent\# create the final skf-files \\
+xabSpl2spl hh.4abSpl hh\_elec.skf  1 \\
+} 
+
+Under \textbf{utils} folder, a script named \textbf{combine.sh} can do all
+jobs at once.
+
+\section{Plot Repulsive Potentials}
+
+\textbf{SplineAnsch} is a script to plot repulsive potentials and its
+derivatives.  The script requires \href{http://www.gnuplot.info/}{gnuplot}
+and \href{https://www.gnu.org/software/gv/}{gv} ghostscript interpreter.  
+
+\textbf{Usage}
+\begin{description}
+  \item[\is{one skf file:}]  SplineAnsch -a $r_{min}$:$r_{max}$ file1.skf
+  \item[\is{two skf file:}]  SplineAnsch -a $r_{min}$:$r_{max}$ -v file1.skf file2.skf
+\end{description} 
+
+Note: any files in the XabSpl or spl format can be also be used.
+You can find all options by running \texttt{SplineAnsch} without arguments. 
+
+\textbf{Example}\\ 
+{\scriptsize
+\noindent\# to plot new cc.skf zoom in on a range of 2.0-5.0 (a.u.).\\
+SplineAnsch -a 2.0:5.0 cc.skf \\
+
+\noindent\# to compare the new cc.skf with cc.skf from mio set.\\ 
+SplineAnsch -a 2.0:5.0 -v cc\_mio.spl cc.4abSpl \\
+
+}
+
+

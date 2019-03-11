@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+  echo "\$1: filename "
+  echo "\$2: optional: ending of name potentials should be written to (e.g. c_c_.\$2.4abSpl)"
+  exit -1
+fi
+
+file=$1
+suf=$2
+
+ispl=0
+for i in `grep "Spline" $file`; do 
+  ((ispl++))  
+  lineSpl=`grep -n "Spline" $file | head -n $ispl | tail -n 1`
+  line=${lineSpl%:Spline}
+  
+  ((j = $line - 1)) 
+  splname=`head -n $j $file | tail -n 1 | awk '{print $1}'`
+  ((j = $line + 1))
+  nspl=`head -n $j $file | tail -n 1 | awk '{print $1}'`
+  ((j = $line + 3))
+  order=`head -n $j $file | tail -n 1 | awk '{print NF-3}'`
+  ((j = $line + $nspl + 3))
+  ((k = $nspl + 4 ))
+  if [ -n "$suf" ]; then
+     head -n $j $file | tail -n $k > $splname.$suf.${order}abSpl
+     sed -i s/nan/0.0/g $splname.$suf.${order}abSpl
+  else
+     head -n $j $file | tail -n $k > $splname.${order}abSpl
+     sed -i s/nan/0.0/g $splname.${order}abSpl
+  fi
+done

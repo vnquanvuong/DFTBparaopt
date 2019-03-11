@@ -1,0 +1,224 @@
+\usepackage{a4}
+\usepackage[latin2]{inputenc}
+\usepackage{t1enc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem} %for my check list
+\usepackage{pifont}   %for my check list
+\usepackage{titling}  %to modify position of titile
+\usepackage{mathptmx}
+\usepackage{float}
+\usepackage{array}
+\usepackage[english]{babel}
+\usepackage{color}
+\usepackage{tabularx}
+\usepackage{makeidx}
+\usepackage{xfrac} % nicely formated fractions
+\usepackage[colorinlistoftodos]{todonotes}   % for todonote
+\usepackage{soul}                            % for todonote
+\usepackage{fancyvrb}
+%\usepackage[colorinlistoftodos,disable]{todonotes} %disable the note
+\usepackage{listings,lstautogobble}
+\lstset{
+  language=Pascal,
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  breaklines=true,
+  showstringspaces=true,
+  autogobble=true,
+  postbreak=\raisebox{0ex}[0ex][0ex]{\color{red}$\hookrightarrow$\space}
+}
+\definecolor{lightmagenta}{cmyk}{0,0.333,0,0}
+\usepackage[pdfpagemode={UseOutlines}, pdfstartview={Fit},
+        bookmarks,bookmarksnumbered,bookmarksopen,bookmarksopenlevel=0,
+        plainpages=false, pdfpagelabels,
+        backref=page, breaklinks=true, colorlinks=true,
+        filecolor={lightmagenta},urlcolor={blue},
+        linkcolor={blue},citecolor={blue}]{hyperref}
+
+\newcommand{\pref}[1]{\pageref{#1}}              %% pageref
+\newcommand{\cb}{\{\}}                           %% curly braces
+\newcommand{\is}[1]{\textsf{#1}}                 %% input style
+\newcommand{\iscb}[1]{\is{#1\cb}}                %% input style
+\newcommand{\isl}[2]{\hyperref[#2]{\textsf{#1}}} %% input style
+\newcommand{\islcb}[2]{\hyperref[#2]{\iscb{#1}}} %% input style
+\newcommand{\kw}[1]{\is{#1}\index{#1@\is{#1}}}   %% keyword (with index entry)
+\newcommand{\kwl}[2]{\is{#1}\index{#1@\is{#1}}\label{#2}} 
+%% keyword (with index entry and label)
+\newcommand{\kwcb}[1]{\iscb{#1}\index{#1\cb@\iscb{#1}}} 
+%% kword with curly braces
+
+%%% Sections, subsections etc. as hyperreference targets.
+\newcommand{\htchapter}[1]{\chapter{\kw{#1}}\label{#1}}
+\newcommand{\htsection}[1]{\section{\kw{#1}}\label{#1}}
+\newcommand{\htsubsection}[1]{\subsection{\kw{#1}}\label{#1}}
+\newcommand{\htsubsubsection}[1]{\subsubsection{\kw{#1}}\label{#1}}
+\newcommand{\htparagraph}[1]{\paragraph{\kw{#1}}\label{#1}}
+\newcommand{\htsubparagraph}[1]{\subparagraph{\kw{#1}}\label{#1}}
+\newcommand{\modif}[1]{\is{[#1]}}
+\newcommand{\modtype}[1]{{\textrm{\textit{#1}}}}
+%%\newcommand{\modtype}[1]{\textsf{[}\textit{#1}\textsf{]}\ }
+%%\newcommand{\modexpl}[1]{\textsf{[#1]}\ }
+
+%%% Sections, subsections etc. as hyperreference targets (if title is a 
+%%% curly braced keyword).
+\newcommand{\htcbchapter}[1]{\chapter{\kwcb{#1}}\label{#1}}
+\newcommand{\htcbsection}[1]{\section{\kwcb{#1}}\label{#1}}
+\newcommand{\htcbsubsection}[1]{\subsection{\kwcb{#1}}\label{#1}}
+\newcommand{\htcbsubsubsection}[1]{\subsubsection{\kwcb{#1}}\label{#1}}
+\newcommand{\htcbparagraph}[1]{\paragraph{\kwcb{#1}}\label{#1}}
+\newcommand{\htcbsubparagraph}[1]{\subparagraph{\kwcb{#1}}\label{#1}}
+
+%%% Table of properties
+    %\begin{tabular*}{\linewidth}{|>{\sf}l>{\sf}l>{\sf}l|}
+\renewcommand{\tabularxcolumn}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newenvironment{b4table}{
+  \par
+  \begin{minipage}{\linewidth}
+    \begin{tabular*}{\linewidth}{| >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l|}
+      \hline
+    }
+    {
+      \hline
+    \end{tabular*}
+  \end{minipage}
+}
+
+\newenvironment{b4tableh}{
+  \begin{b4table}
+    \textrm{Keyword} & \textrm{Type} & \textrm{Range} & \textrm{Default} \\
+    \hline }
+  {
+  \end{b4table}
+}
+\newenvironment{b5table}{
+  \par
+  \begin{minipage}{\linewidth}
+    \begin{tabular*}{\linewidth}{| >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l|}
+      \hline
+    }
+    {
+      \hline
+    \end{tabular*}
+  \end{minipage}
+}
+
+\newenvironment{b6table}{
+  \par
+  \begin{minipage}{\linewidth}
+    \begin{tabular*}{\linewidth}{| >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l|}
+      \hline
+    }
+    {
+      \hline
+    \end{tabular*}
+  \end{minipage}
+}
+\newenvironment{b7table}{
+  \par
+  \begin{minipage}{\linewidth}
+    \begin{tabular*}{\linewidth}{| >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l|}
+      \hline
+    }
+    {
+      \hline
+    \end{tabular*}
+  \end{minipage}
+}
+\newenvironment{b8table}{
+  \par
+  \begin{minipage}{\linewidth}
+    \begin{tabular*}{\linewidth}{| >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l|}
+      \hline
+    }
+    {
+      \hline
+    \end{tabular*}
+  \end{minipage}
+}
+\newenvironment{b9table}{
+  \par
+  \begin{minipage}{\linewidth}
+    \begin{tabular*}{\linewidth}{| >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l@{\extracolsep{\fill}} >{\sf}l|}
+      \hline
+    }
+    {
+      \hline
+    \end{tabular*}
+  \end{minipage}
+}
+
+
+\newenvironment{unittable}[1]{
+  \par
+  \begin{minipage}{\linewidth}
+    \begin{tabular*}{\linewidth}{l@{\extracolsep{\fill}}l}
+      \multicolumn{2}{l}{\textbf{#1:}}\\
+    }
+    {
+    \end{tabular*}
+  \end{minipage}
+}
+
+\addtolength{\hoffset}{-1.0cm}
+\addtolength{\textwidth}{2.0cm}
+\addtolength{\voffset}{-1.0cm}
+\addtolength{\textheight}{1.5cm}
+
+\renewcommand{\ttdefault}{\sfdefault}
+
+%% Inverse parskip
+\newcommand{\invparskip}{\vspace*{-\parskip}}
+
+%%%%%%%%%%%%%%%%%%%%%MYCHECKLIST%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newlist{mychecklist}{itemize}{2}
+\setlist[mychecklist]{label=$\square$}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcommand{\done}{\rlap{$\square$}{\raisebox{2pt}{\large\hspace{1pt}\cmark}}%
+                   \hspace{-2.5pt}}
+\newcommand{\wrong}{\rlap{$\square$}{\large\hspace{1pt}\xmark}}
+
+%%%%%%%%%%%%%%%%%%%%%TODONOTE%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\ncomment}[1]{\todo{\thesection{}: #1}}
+\newcommand{\icomment}[1]{\todo[inline]{#1}}
+
+\makeatletter % change the catcode of @ to 11 
+\if@todonotes@disabled
+  \newcommand{\hcomment}[2]{#1}
+\else
+  \newcommand{\hcomment}[2]{\texthl{#1}\todo{\thesection{}: #2}}
+\fi
+\makeatother  % change the catcode of @ back to 11    
+
+\newcounter{lcomment}
+\newcommand{\lcomment}[2][]{%
+ \refstepcounter{lcomment}{%
+   \todo[color={red!100!green!33},size=\small]{\thesection{}: %
+      \textbf{[\uppercase{#1}\thelcomment]:}~#2}%
+ }}
+
+\newcounter{lhcomment}
+\newcommand{\lhcomment}[3][]{%
+ \refstepcounter{lhcomment}{%
+   \texthl{#2}~\todo[color={red!100!green!33},size=\small]{\thesection{}: %
+      \textbf{[\uppercase{#1}\thelhcomment]:}~#3}%
+ }}
+
+%
+%\newcounter{lcomment}
+%\newcommand{\lcomment}[2][]{%
+% \refstepcounter{lcomment}{\texthl{#3}%
+%   \todo[color={red!100!green!33},size=\small]{%
+%     \textbf{[\uppercase{#1}\themycomment]:}~#2}%
+% }
+%}
+
+%\newcounter{numcomment}
+%\newcommand{\numcomment}[2][]{%
+% \refstepcounter{numcomment}{%
+%   \todo[color={red!100!green!33},size=\small]{%
+%     \textbf{[\uppercase{#1}\themycomment]:}~#2}%
+% }
+%}

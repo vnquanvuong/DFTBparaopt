@@ -1,0 +1,29 @@
+Geometry = GenFormat {
+  <<< "in.gen"
+}
+
+Hamiltonian = DFTB {
+  Eigensolver = RelativelyRobust{}
+  Charge = 0
+  SCC = Yes
+  SCCTolerance = 1e-9
+  MaxAngularMomentum = {
+    H  = "s"
+    C  = "p"
+    N  = "p"
+    O  = "p"
+  }
+  SlaterKosterFiles = Type2Filenames{
+     Prefix = "../eskf/"
+     Suffix = ".skf"
+     Separator = "-" 
+     LowerCaseTypeName = No
+  }
+}
+ParserOptions {
+  IgnoreUnprocessedNodes = Yes
+}
+Options {
+  CalculateForces = Yes
+}
+

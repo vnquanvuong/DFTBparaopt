@@ -1,0 +1,41 @@
+%\documentclass[usletter,11pt]{report}
+\documentclass[a4paper,11pt]{report}
+
+\include{packages}
+
+\makeindex
+
+\include{title}
+
+\begin{document}
+\maketitle
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+%\todototoc 
+%\listoftodos 
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\include{intro}
+\include{install}
+\include{repopt}
+\include{erepopt}
+\include{utils}
+\include{tutorials}
+
+\appendix
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\phantomsection\addcontentsline{toc}{chapter}{Index}
+\printindex
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

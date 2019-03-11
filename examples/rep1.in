@@ -1,0 +1,39 @@
+$system:
+  dftb_version    dftb+
+  idecompose      6
+  ilmsfit         4
+$end
+
+$genetic_algorithm:
+  ga              1
+  runtest         0
+  score_type      2 
+  read_spline     1
+  popsize         1
+  ngen            0
+  preserved_num   0
+  destroy_num     0
+  popsizemin      1
+  pmut            0.05
+  pcross          0.90
+$end
+
+$element_types:# atom type, eatom
+$end
+
+
+$potentials:# potentials to optimize, delta extent r, file of knot-vector, order of spline, constrain level, attractive  allow 
+  h_h_    0.3    grids/hh.grdx     0.05      4    2   1 
+  c_h_    0.3    grids/ch.grdx     0.05      4    2   1 
+  c_c_    0.3    grids/cc.grdx     0.05      4    2   1  
+$end
+
+$compounds:# geometries, Ediss(kcal/mol), eweight, fweight, dftbinp, forceinput
+  geom/h2.xyz                           109.94     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/ch4.xyz                          420.16     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/h3cch3.xyz                       712.04     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/c6h6.xyz                        1367.45     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/h2cch2.xyz                       563.57     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hcch.xyz                         405.14     1    1  dftb_inp/dftb2_c0.hsd   0 
+$end
+

@@ -1,0 +1,65 @@
+\chapter{Overview and Installation of DFTBopt}
+
+\label{chap:install}
+
+\section{Overview}
+
+\textbf{DFTBopt}\cite{Vuong2018} is a package to automatically optimize
+electronic, repulsive, and dispersion parameters for Density-Functional
+based Tight-Binding (DFTB) method. The package includes two main programs:
+(1) \textbf{repopt} for optimization of only repulsive potentials and (2)
+\textbf{erepopt} for optimization of all DFTB parameters. \textbf{erepopt}
+uses \textbf{repopt} for the repulsive potentials fitting. Currently,
+\textbf{repopt} is stable released version 1.0. On the other hand,
+\textbf{erepopt} is still in the beta-development version. In addition, the
+package also provide some tools to analyze or evaluate new DFTB parameters.
+
+Most of the codes were written in C++. The code required two libraries:
+\href{http://lancet.mit.edu/ga/}{\textbf{galib247}} and
+\href{http://eigen.tuxfamily.org/index.php?title=Main_Page}{\textbf{eigen3}}.
+A part of the repulsive fitting (\textbf{repopt}) uses some piece of code
+from a semi-automatic erepfit program originally developed by Michael
+Gaus.\cite{Gaus2009} This manual was prepared using same style of DFTB+ manual,
+making it looks similar to DFTB+ manual. $\ddot\smile\ddot\smile\ddot\smile$
+
+\section{Installation}
+
+To get the code:\\
+{\scriptsize
+git clone
+\href{https://github.com/v2quan89/dftbopt.git}{https://github.com/v2quan89/dftbopt.git}
+}
+
+or download compressed file\\
+{\scriptsize
+wget \href{https://github.com/v2quan89/DFTBopt.tar.gz}{https://github.com/v2quan89/DFTBopt.tar.gz}
+}
+
+Note, both links may not work at this moment. You can send an email to
+\textbf{v2quan89@gmail.com} if the links do not work.  Then, extract
+DFTBopt.tar.gz using
+
+{\scriptsize
+tar -xzvf DFTBopt.tar.gz
+}
+
+Change to directory \textbf{DFTBopt} and type ``\textbf{./install.sh}''.
+Currently, \textbf{DFTBopt} was tested for two compilers: GNU(g++) and
+INTEL(icpc).
+
+You can choose the compiler by setting \textbf{\$CXX=``g++''} or
+\textbf{\$CXX=``icpc''} in the \textbf{``install.sh''} file.  To compile
+\textbf{``erepopt''}, a MPI library is also required. The
+\textbf{install.sh} script will try to get all the required library and
+compile the code. You might have to adjust some flags in the
+\textbf{makefile}. 
+
+After the compilation, if you use \textbf{bash}, you can add following
+command to you ``.bashrc'' or run it before using DFTBopt,
+
+{\scriptsize
+source path-to-DFTBopt-directory/dftbopt\_on.bash
+}
+
+
+

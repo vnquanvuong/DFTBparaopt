@@ -1,0 +1,54 @@
+#!/bin/bash
+
+if [ $# -lt 3 ]; then 
+	echo "\$1: .?abSpl file to convert (order of polynomials should be the same for all intervalls!)"
+	#echo "\$2: order of Spline in \$1"
+	echo "\$2: .spl or .sol file, where electronic parameters should be taken from; if \"0\" no electronic part is added"
+	echo "\$3: modus of conversion (=1 taking function values, =2 taking second deriv)"
+	echo "\$4: optional: grid as in ord2abSpl (default is 1,1.05,1.10,...,cutoff)" 
+	exit -1
+fi 
+
+file=$1
+#order=$2
+elfile=$2
+modus=$3
+grid=$4
+
+### use j as hlp-variable for new file name, find order of Spline ###
+j=${file%.?abSpl}
+order=`grep -A 3 Spline $file | tail -n 1 | awk '{print NF-3}'`
+
+### create default grid if necessary ###
+if [ ! $grid ]; then
+  cutoff=`grep -A 1 Spline $file | tail -1 | awk '{print $2}'`
+  last=`echo $cutoff | awk '{print $1-0.001}'`
+  seq 1 0.05 $last      > seq.tmp
+  anzSpl=`cat seq.tmp | wc -l`
+  echo Spline           > grid.tmp
+  echo $anzSpl $cutoff >> grid.tmp
+  echo 0 0 0           >> grid.tmp
+  cat seq.tmp          >> grid.tmp
+fi
+
+### now convert ###
+if [ $grid ]; then
+  ord2abSpl $file $order $modus $grid > $j.abSpl.tmp
+else
+  ord2abSpl $file $order $modus grid.tmp > $j.abSpl.tmp
+fi
+
+### put electronic part and repulsive together ###
+if [ $elfile != "0" ]; then 
+  awk '(NR==1),/Spline/'   $elfile        > $j.spl
+  sed -e '0,/Spline/d'     $j.abSpl.tmp  >> $j.spl
+else
+  mv $j.abSpl.tmp $j.spl
+fi
+
+### replace, just to make it readable by SplineAnsch ###
+sed -i "s/nan/1.0/g" $j.spl
+
+### remove temporary files ###
+rm -rf $j.abSpl.tmp seq.tmp grid.tmp
+

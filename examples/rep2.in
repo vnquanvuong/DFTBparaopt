@@ -1,0 +1,241 @@
+$system:
+  dftb_version    dftb+
+  idecompose      6
+  ilmsfit         4
+  nreplicate      1
+$end
+
+$genetic_algorithm:
+  ga              1
+  runtest         0
+  score_type      2 
+  read_spline     1
+  popsizemax      1 #100
+  preserved_num   10
+  destroy_num     1
+  popsizemin      1
+  ngen            0 #1000
+  pmut            0.03
+  pcross          0.90
+  grid_update     0
+$end
+
+$element_types:# atom type, eatom
+$end
+
+
+$potentials:# potentials to optimize, delta extent r, file of knot-vector, order of spline, constrain level, attractive allow 
+  h_h_    0.3    grids/hh.grdx     0.05      4    2   1 
+  c_h_    0.3    grids/ch.grdx     0.05      4    2   1 
+  c_c_    0.3    grids/cc.grdx     0.05      4    2   1  
+  h_n_    0.3    grids/hn.grdx     0.05      4    2   1
+  h_o_    0.3    grids/ho.grdx     0.05      4    2   1
+  c_n_    0.3    grids/cn.grdx     0.05      4    2   1
+  n_n_    0.3    grids/nn.grdx     0.05      4    2   1
+  c_o_    0.3    grids/co.grdx     0.05      4    2   1
+  n_o_    0.3    grids/no.grdx     0.05      4    2   1
+  o_o_    0.3    grids/oo.grdx     0.05      4    2   1
+$end
+
+$compounds:# geometries, Ediss(kcal/mol), eweight, fweight, dftbinp, forceinput
+  geom/h2.xyz                           109.94     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/ch4.xyz                          420.16     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hcch.xyz                         405.14     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/h3cch3.xyz                       712.04     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/h2cch2.xyz                       563.57     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/c6h6.xyz                        1367.45     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/h2cchch3.xyz                     860.47     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/h3cch2ch3.xyz                   1006.27     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/nh3.xyz                          297.15     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/h2o.xyz                          232.16     1    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/hcn.xyz                          313.65     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/d24.xyz                          597.82     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/o2.xyz                            91.84     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/n_ch3_3.xyz                     1160.60     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/h2nnh2.xyz                       437.01     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/h3coch3.xyz                      797.90     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/h2noch3.xyz                      644.03     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hcooh.xyz                        500.99     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/hoch3.xyz                        512.60     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/hnnh.xyz                         296.22     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/h3cno2.xyz                       601.80     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hno2.xyz                         311.63     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hcooch3.xyz                      785.92     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hooh.xyz                         267.85     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hnch2.xyz                        439.26     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/h2nch3.xyz                       581.33     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/h2co.xyz                         374.56     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/h3ccooh.xyz                      802.38     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/hn_ch3_2.xyz                     869.51     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hno3.xyz                         388.09     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/n2o.xyz                          271.17     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/pyridine.xyz                    1238.12     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/h3cooh.xyz                       555.63     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/n2.xyz                           228.81     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/co.xyz                           260.23     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/co2.xyz                          390.15     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hconh2.xyz                       567.22     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/h3cconh2.xyz                     867.14     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/trp.xyz                         1071.71     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/pro.xyz                         1608.41     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/his.xyz                          950.47     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/arg.xyz                          798.19     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/P20.xyz                         1127.98     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/P44.xyz                         1445.51     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/P51.xyz                         1770.17     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/P60.xyz                         1766.36     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/R20.xyz                         1124.46     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/R44.xyz                         1449.23     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/R51.xyz                         1771.88     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/R60.xyz                         1774.66     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/A.xyz                           1679.54     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/C.xyz                           1406.31     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/G.xyz                           1790.45     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/T.xyz                           1648.61     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/p2.xyz                           563.57     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/phenol.xyz                      1470.74     2    2  dftb_inp/dftb2_c0.hsd   0 
+  geom/allene.xyz                       703.63     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/oxirane.xyz                      650.88     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/ketene.xyz                       532.79     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/glyoxal.xyz                      634.49     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hnc.xyz                          298.48     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/oxirene.xyz                      455.69     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hocn.xyz                         409.82     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hnco.xyz                         434.29     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/dioxirane.xyz                    409.72     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/nccn.xyz                         502.91     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hcno.xyz                         365.11     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/honc.xyz                         350.67     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hno.xyz                          205.88     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/c-hono.xyz                       311.63     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hnnn.xyz                         331.93     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/c2.xyz                           149.65     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/o3.xyz                           146.71     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/hp.xyz                          -314.65     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/ch3p.xyz                          81.59     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/nh4p.xyz                         194.70     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/h3op.xyz                          89.33     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/h5o2.xyz                         355.07     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/hisp.xyz                         869.07     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/argp.xyz                         729.69     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/Ap.xyz                          1558.95     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/Cp.xyz                          1326.53     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/Gp.xyz                          1710.96     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/Tp.xyz                          1544.87     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/c2h2p.xyz                        248.11     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/p2p.xyz                          416.10     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/phenolp.xyz                     1356.13     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/lysp.xyz                         490.03     2    2  dftb_inp/dftb2_c+1.hsd  0 
+  geom/hm.xyz                             8.49     2    2  dftb_inp/dftb2_c-1.hsd  0 
+  geom/ch3m.xyz                         306.54     2    2  dftb_inp/dftb2_c-1.hsd  0 
+  geom/nh2m.xyz                         199.50     2    2  dftb_inp/dftb2_c-1.hsd  0 
+  geom/hom.xyz                          150.17     2    2  dftb_inp/dftb2_c-1.hsd  0 
+  geom/h3o2.xyz                         408.10     2    2  dftb_inp/dftb2_c-1.hsd  0 
+  geom/nglu.xyz                         762.06     2    2  dftb_inp/dftb2_c-1.hsd  0 
+  geom/no3m.xyz                         371.91     2    2  dftb_inp/dftb2_c-1.hsd  0 
+  geom/c2n3m.xyz                        663.56     2    2  dftb_inp/dftb2_c-1.hsd  0 
+#######################################################################################################################################
+  geom/bchange/ch4_hc_1,2_d-0.3.xyz            0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/ch4_hc_1,2_d-0.3.frc          0  
+  geom/bchange/nh3_hn_1,2_d-0.3.xyz            0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/nh3_hn_1,2_d-0.3.frc          0  
+  geom/bchange/h2o_ho_1,2_d-0.3.xyz            0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2o_ho_1,2_d-0.3.frc          0  
+  geom/bchange/hcch_min_cc_1,2_d-0.3.xyz       0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/hcch_min_cc_1,2_d-0.3.frc     0  
+  geom/bchange/hcn_min_cn_1,3_d-0.3.xyz        0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/hcn_min_cn_1,3_d-0.3.frc      0  
+  geom/bchange/n2_min_nn_1,2_d-0.3.xyz         0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/n2_min_nn_1,2_d-0.3.frc       0  
+  geom/bchange/h2co_min_co_1,2_d-0.3.xyz       0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2co_min_co_1,2_d-0.3.frc     0  
+  geom/bchange/hno3_min_no_3,5_d-0.3.xyz       0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/hno3_min_no_3,5_d-0.3.frc     0  
+  geom/bchange/o2_min_oo_1,2_d-0.3.xyz         0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/o2_min_oo_1,2_d-0.3.frc       0  
+
+  geom/bchange/h2_hh_1,2_d-0.2.xyz             0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2_hh_1,2_d-0.2.frc           0  
+  geom/bchange/ch4_hc_1,2_d-0.2.xyz            0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/ch4_hc_1,2_d-0.2.frc          0  
+  geom/bchange/nh3_hn_1,2_d-0.2.xyz            0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/nh3_hn_1,2_d-0.2.frc          0  
+  geom/bchange/h2o_ho_1,2_d-0.2.xyz            0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2o_ho_1,2_d-0.2.frc          0  
+  geom/bchange/hcch_min_cc_1,2_d-0.2.xyz       0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/hcch_min_cc_1,2_d-0.2.frc     0  
+  geom/bchange/hcn_min_cn_1,3_d-0.2.xyz        0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/hcn_min_cn_1,3_d-0.2.frc      0  
+  geom/bchange/n2_min_nn_1,2_d-0.2.xyz         0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/n2_min_nn_1,2_d-0.2.frc       0  
+  geom/bchange/h2co_min_co_1,2_d-0.2.xyz       0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2co_min_co_1,2_d-0.2.frc     0  
+  geom/bchange/hno3_min_no_3,5_d-0.2.xyz       0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/hno3_min_no_3,5_d-0.2.frc     0  
+  geom/bchange/o2_min_oo_1,2_d-0.2.xyz         0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/o2_min_oo_1,2_d-0.2.frc       0  
+ 
+  geom/bchange/h2_hh_1,2_d-0.1.xyz             0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2_hh_1,2_d-0.1.frc           0  
+  geom/bchange/ch4_hc_1,2_d-0.1.xyz            0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/ch4_hc_1,2_d-0.1.frc          0  
+  geom/bchange/nh3_hn_1,2_d-0.1.xyz            0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/nh3_hn_1,2_d-0.1.frc          0  
+  geom/bchange/h2o_ho_1,2_d-0.1.xyz            0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2o_ho_1,2_d-0.1.frc          0  
+  geom/bchange/hcch_min_cc_1,2_d-0.1.xyz       0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/hcch_min_cc_1,2_d-0.1.frc     0  
+  geom/bchange/hcn_min_cn_1,3_d-0.1.xyz        0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/hcn_min_cn_1,3_d-0.1.frc      0  
+  geom/bchange/n2_min_nn_1,2_d-0.1.xyz         0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/n2_min_nn_1,2_d-0.1.frc       0  
+  geom/bchange/h2co_min_co_1,2_d-0.1.xyz       0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2co_min_co_1,2_d-0.1.frc     0  
+  geom/bchange/hno3_min_no_3,5_d-0.1.xyz       0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/hno3_min_no_3,5_d-0.1.frc     0  
+  geom/bchange/o2_min_oo_1,2_d-0.1.xyz         0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/o2_min_oo_1,2_d-0.1.frc       0  
+ 
+  geom/bchange/h2_hh_1,2_d0.1.xyz              0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2_hh_1,2_d0.1.frc            0  
+  geom/bchange/ch4_hc_1,2_d0.1.xyz             0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/ch4_hc_1,2_d0.1.frc           0  
+  geom/bchange/h3cch3_max_cc_1,2_d0.1.xyz      0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h3cch3_max_cc_1,2_d0.1.frc    0  
+  geom/bchange/n_ch3_3_max_cn_1,2_d0.1.xyz     0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/n_ch3_3_max_cn_1,2_d0.1.frc   0  
+  geom/bchange/h2nnh2_max_nn_1,2_d0.1.xyz      0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2nnh2_max_nn_1,2_d0.1.frc    0  
+  geom/bchange/h3coch3_max_co_9,1_d0.1.xyz     0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h3coch3_max_co_9,1_d0.1.frc   0  
+  geom/bchange/hno3_max_no_2,3_d0.1.xyz        0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/hno3_max_no_2,3_d0.1.frc      0  
+  geom/bchange/hooh_max_oo_1,3_d0.1.xyz        0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/hooh_max_oo_1,3_d0.1.frc      0  
+
+  geom/bchange/h2_hh_1,2_d0.2.xyz              0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2_hh_1,2_d0.2.frc            0  
+  geom/bchange/ch4_hc_1,2_d0.2.xyz             0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/ch4_hc_1,2_d0.2.frc           0  
+  geom/bchange/h3cch3_max_cc_1,2_d0.2.xyz      0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h3cch3_max_cc_1,2_d0.2.frc    0  
+  geom/bchange/n_ch3_3_max_cn_1,2_d0.2.xyz     0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/n_ch3_3_max_cn_1,2_d0.2.frc   0  
+  geom/bchange/h2nnh2_max_nn_1,2_d0.2.xyz      0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2nnh2_max_nn_1,2_d0.2.frc    0  
+  geom/bchange/h3coch3_max_co_9,1_d0.2.xyz     0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h3coch3_max_co_9,1_d0.2.frc   0  
+  geom/bchange/hno3_max_no_2,3_d0.2.xyz        0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/hno3_max_no_2,3_d0.2.frc      0  
+  geom/bchange/hooh_max_oo_1,3_d0.2.xyz        0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/hooh_max_oo_1,3_d0.2.frc      0  
+  
+  geom/bchange/h2_hh_1,2_d0.3.xyz              0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2_hh_1,2_d0.3.frc            0  
+  geom/bchange/ch4_hc_1,2_d0.3.xyz             0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/ch4_hc_1,2_d0.3.frc           0  
+  geom/bchange/h3cch3_max_cc_1,2_d0.3.xyz      0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h3cch3_max_cc_1,2_d0.3.frc    0  
+  geom/bchange/n_ch3_3_max_cn_1,2_d0.3.xyz     0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/n_ch3_3_max_cn_1,2_d0.3.frc   0  
+  geom/bchange/h2nnh2_max_nn_1,2_d0.3.xyz      0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2nnh2_max_nn_1,2_d0.3.frc    0  
+  geom/bchange/h3coch3_max_co_9,1_d0.3.xyz     0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h3coch3_max_co_9,1_d0.3.frc   0  
+  geom/bchange/hno3_max_no_2,3_d0.3.xyz        0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/hno3_max_no_2,3_d0.3.frc      0  
+  geom/bchange/hooh_max_oo_1,3_d0.3.xyz        0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/hooh_max_oo_1,3_d0.3.frc      0  
+  
+  geom/bchange/h2_hh_1,2_d0.4.xyz              0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2_hh_1,2_d0.4.frc            0  
+  geom/bchange/ch4_hc_1,2_d0.4.xyz             0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/ch4_hc_1,2_d0.4.frc           0  
+  geom/bchange/h3cch3_max_cc_1,2_d0.4.xyz      0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h3cch3_max_cc_1,2_d0.4.frc    0  
+  geom/bchange/n_ch3_3_max_cn_1,2_d0.4.xyz     0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/n_ch3_3_max_cn_1,2_d0.4.frc   0  
+  geom/bchange/h2nnh2_max_nn_1,2_d0.4.xyz      0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2nnh2_max_nn_1,2_d0.4.frc    0  
+  geom/bchange/h3coch3_max_co_9,1_d0.4.xyz     0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h3coch3_max_co_9,1_d0.4.frc   0  
+  geom/bchange/hno3_max_no_2,3_d0.4.xyz        0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/hno3_max_no_2,3_d0.4.frc      0  
+  geom/bchange/hooh_max_oo_1,3_d0.4.xyz        0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/hooh_max_oo_1,3_d0.4.frc      0  
+  
+  geom/bchange/h2_hh_1,2_d0.5.xyz              0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2_hh_1,2_d0.5.frc            0  
+  geom/bchange/ch4_hc_1,2_d0.5.xyz             0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/ch4_hc_1,2_d0.5.frc           0  
+  geom/bchange/h3cch3_max_cc_1,2_d0.5.xyz      0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h3cch3_max_cc_1,2_d0.5.frc    0  
+  geom/bchange/n_ch3_3_max_cn_1,2_d0.5.xyz     0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/n_ch3_3_max_cn_1,2_d0.5.frc   0  
+  geom/bchange/h2nnh2_max_nn_1,2_d0.5.xyz      0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2nnh2_max_nn_1,2_d0.5.frc    0  
+  geom/bchange/h3coch3_max_co_9,1_d0.5.xyz     0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h3coch3_max_co_9,1_d0.5.frc   0  
+  geom/bchange/hno3_max_no_2,3_d0.5.xyz        0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/hno3_max_no_2,3_d0.5.frc      0  
+  geom/bchange/hooh_max_oo_1,3_d0.5.xyz        0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/hooh_max_oo_1,3_d0.5.frc      0  
+
+  geom/bchange/nh3_hn_1,2_d0.1.xyz             0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/nh3_hn_1,2_d0.1.frc           0  
+  geom/bchange/h2o_ho_1,2_d0.1.xyz             0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2o_ho_1,2_d0.1.frc           0  
+  geom/bchange/nh3_hn_1,2_d0.2.xyz             0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/nh3_hn_1,2_d0.2.frc           0  
+  geom/bchange/h2o_ho_1,2_d0.2.xyz             0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2o_ho_1,2_d0.2.frc           0  
+  geom/bchange/nh3_hn_1,2_d0.3.xyz             0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/nh3_hn_1,2_d0.3.frc           0  
+  geom/bchange/h2o_ho_1,2_d0.3.xyz             0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2o_ho_1,2_d0.3.frc           0  
+  geom/bchange/nh3_hn_1,2_d0.4.xyz             0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/nh3_hn_1,2_d0.4.frc           0  
+  geom/bchange/h2o_ho_1,2_d0.4.xyz             0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2o_ho_1,2_d0.4.frc           0  
+  geom/bchange/nh3_hn_1,2_d0.5.xyz             0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/nh3_hn_1,2_d0.5.frc           0  
+  geom/bchange/h2o_ho_1,2_d0.5.xyz             0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2o_ho_1,2_d0.5.frc           0  
+$end
+
+$definition_reactions:# abbreviation, filename, dftbinp
+  h2                      geom/h2.xyz                  dftb_inp/dftb2_c0.hsd
+  ch4                     geom/ch4.xyz                 dftb_inp/dftb2_c0.hsd        
+  hcch                    geom/hcch.xyz                dftb_inp/dftb2_c0.hsd        
+  h2cch2                  geom/h2cch2.xyz              dftb_inp/dftb2_c0.hsd        
+  h3cch3                  geom/h3cch3.xyz              dftb_inp/dftb2_c0.hsd        
+  c6h6                    geom/c6h6.xyz                dftb_inp/dftb2_c0.hsd        
+$end
+$reactions:#  reaction, " -> ", Reactionenergy [kcal/mol], reaweight
+  +1 h3cch3         +1  h2         -2 ch4                ->   -18.33   2.0      
+  +1 h2cch2         +2  h2         -2 ch4                ->   -56.86   2.0 
+  +1 hcch           +3  h2         -2 ch4                ->  -105.35   2.0 
+  +1 c6h6           +9  h2         -6 ch4                ->  -164.01   2.0 
+$end
+

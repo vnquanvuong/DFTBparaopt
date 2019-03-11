@@ -1,0 +1,243 @@
+#!/bin/bash
+
+SCRIPTNAME=$(basename $0 .sh)
+
+EXIT_SUCCESS=0
+EXIT_FAILURE=1
+EXIT_ERROR=2
+EXIT_BUG=10
+
+function usage {
+  echo "$SCRIPTNAME" 
+  [[ $# -eq 1 ]] && exit $1 || exit $EXIT_FAILURE
+}
+
+function getval {
+  local file=$1
+  local xmin=$2
+  local xinc=$3
+  local filetosave=$4
+
+  sed '/^ *$/d' $file | sed -e '0,/Spline/d' | awk -v xmin=$xmin -v xinc=$xinc -v filetosave=$filetosave '{
+    if (NR==1) {nspl=$1; cutoff=$2}
+    else if (NR==2) {
+      expA=$1; expB=$2; expC=$3
+    }else {
+      order[NR-2]=NF-3 
+      x1[NR-2]=$1; x2[NR-2]=$2;               
+      for (i=3;i<=NF;i++) a[NR-2,i-2]=$i 
+    }
+  }END{
+    y[0]=0; y[1]=0; y[2]=0;
+
+    ### if only one value is to be calculated ###
+    if(xinc==0){
+      if      (xmin >= cutoff ) {               
+        printf ("   %.9f\t%.18f\t%.18f\t%.18f\n",xmin,0, 0, 0)            >> filetosave 
+      }
+      else if (xmin <  x1[1] )  { 
+        getexp(xmin,y) 
+        printf ("   %.9f\t%.18f\t%.18f\t%.18f\n",xmin,y[0],y[1],y[2])     >> filetosave 
+      }
+      else {
+        for (ispl=1;ispl<=nspl;ispl++){
+          if (xmin < x2[ispl])    { 
+            getspl(ispl,xmin,y)
+            printf ("   %.9f\t%.18f\t%.18f\t%.18f\n",xmin,y[0],y[1],y[2]) >> filetosave 
+            break
+          }
+        }
+      }
+    }
+
+    ### else if many values are to be calculated ###
+    else {
+      for (ix=xmin;ix<x1[1]-1e-12;ix+=xinc) { 
+        getexp(ix,y)
+        printf ("   %.9f\t%.18f\t%.18f\t%.18f\n",ix,y[0],y[1],y[2])       >> filetosave 
+      }
+      for (ispl=1;ispl<=nspl;ispl++){ 
+        for (ix=x1[ispl];ix<x2[ispl]-1e-12;ix+=xinc){
+          getspl(ispl,ix,y)
+          printf ("   %.9f\t%.18f\t%.18f\t%.18f\n",ix,y[0],y[1],y[2])     >> filetosave
+        }
+      }
+      printf ("   %.9f\t%.18f\t%.18f\t%.18f\n",cutoff,0, 0, 0)            >> filetosave 
+    }
+  }
+  function getexp(x,y){
+    y[0] = exp(-expA*x+expB)+expC
+    y[1] = -expA*exp(-expA*x+expB)
+    y[2] = expA*expA*exp(-expA*x+expB)
+  }
+  function getspl(ispl,x,y){
+    y[0]=0; y[1]=0; y[2]=0;
+    for (iord=0;iord<=order[ispl];iord++)  y[0] += a[ispl,iord+1] * (x-x1[ispl])^(iord)
+    for (iord=1;iord<=order[ispl];iord++)  y[1] += iord * a[ispl,iord+1] * (x-x1[ispl])^(iord-1)
+    for (iord=2;iord<=order[ispl];iord++)  y[2] += iord * (iord-1)* a[ispl,iord+1] * (x-x1[ispl])^(iord-2)
+  }
+  ' # finish awk
+
+} # finish getval
+
+function ausw {
+  ((auswi++))
+  getval $1 1 0.001 SplineAusw.tmp.$auswi
+}
+
+function plotdateischreiben {
+  echo "plot ["$1"] 0 notitle, \"SplineAusw.tmp.1\" u 1:2 title \"$2\" w l lt 1 lw 3 "       >> gnuplot.inp.tmp
+  echo "plot ["$1"] 0 notitle, \"SplineAusw.tmp.1\" u 1:3 title \"$2\" w l lt 1 lw 3 "       >> gnuplot.inp.tmp
+  echo "plot ["$1"] 0 notitle, \"SplineAusw.tmp.1\" u 1:4 title \"$2\" w l lt 1 lw 3 "       >> gnuplot.inp.tmp
+}
+
+ausschreiben="false"
+vgl="false"
+gv="true"
+ogva="false"
+ogv1="false"
+splines="false"
+paar="false"
+savegnu="false"
+wert="false"
+
+auswi=0
+ai=0
+vgli=0
+vglj=0
+while getopts ':a:v:M:4:w:oSnm1g' OPTION ; do
+  case $OPTION in
+    a) ((ai++))
+      a[$ai]="$OPTARG"
+      ;;
+    o) ausschreiben="true"
+      ;;
+    v) ((vgli++))
+      vgl[$vgli]="$OPTARG"
+      ;;
+    S) splines="true"
+      ;;
+    M) paar="$OPTARG"
+      ;;
+    n) gv="false"
+      ;;
+    m) ogva="true"
+      ;;
+    1) ogv1="true"
+      ;;
+    g) savegnu="true"
+      ;;
+    w) wert="true"
+      einheitwert="$OPTARG"
+      ;;
+    \?) echo "OPTION \"-$OPTARG\"." >&2
+        usage $EXIT_ERROR
+      ;;
+    :) echo "OPTION \"-$OPTARG\"." >&2
+       usage $EXIT_ERROR
+      ;;
+    *) echo "Bug..." >&2
+       usage $EXIT_BUG
+      ;;
+  esac
+done
+shift $(( OPTIND - 1 ))
+
+if [ $# -lt 1 ]; then
+  usage $EXIT_ERROR
+fi
+
+rm -f SplineAusw.tmp* gnuplot.inp.tmp* nurSplines.tmp paar.tmp $1.strucPunkte.tmp vgl1.tmp vgl2.tmp singleval.tmp
+
+if [ "$wert" = "true" ]; then
+  einh=${einheitwert:0:2}  # aa fuer Angstrom oder au fuer atomic unit
+  val=${einheitwert:2}
+  if [ "$einh" != "aa" ] && [ "$einh" != "au" ]; then 
+    echo "Zahl ist in welcher Einheit? so angeben: aa1.0 fuer Angstrom oder au1.0 fuer atomic units"
+    exit -1
+  fi
+  if [ "$einh" == "aa" ]; then 
+    val=`echo $val | awk '{print $1/0.529177}'`
+  fi
+  echo -e "r in [aa]  \t  r in [au]  \t  erep  \t  erep'  \t  erep'' "
+    getval $1 $val 0 singleval.tmp
+    awk '{printf "%.6e \t %.6e \t %.6e \t %.6e \t %.6e\n",$1*0.529177,$1,$2,$3,$4}' singleval.tmp
+    rm singleval.tmp
+  exit 0 
+fi
+
+echo -e "#  r\t\tErep\t\t\tE'rep\t\t\tE''rep" > SplineAusw.tmp.1
+ausw $1
+
+if [ "$ausschreiben" = "true" ]; then 
+  cat SplineAusw.tmp.1
+fi
+
+echo "set term post color solid"                      >  gnuplot.inp.tmp
+echo "set output \"SplineAusw.tmp.ps\""               >> gnuplot.inp.tmp
+plotdateischreiben "" $1
+for i in `seq $ai`; do
+  plotdateischreiben ${a[$i]} $1
+done
+
+for i in `seq $vgli`; do
+  echo >  vgl1.tmp
+  echo >> vgl1.tmp
+
+  ausw ${vgl[$i]}
+  j=$[i+1]
+  wieoft=$(($ai+1))
+  for k in `seq $wieoft`; do 
+    echo ", \"SplineAusw.tmp.$j\" u 1:2 title \"${vgl[$i]}\" w l lw 3 " >> vgl1.tmp
+    echo ", \"SplineAusw.tmp.$j\" u 1:3 title \"${vgl[$i]}\" w l lw 3 " >> vgl1.tmp
+    echo ", \"SplineAusw.tmp.$j\" u 1:4 title \"${vgl[$i]}\" w l lw 3 " >> vgl1.tmp
+  done
+  paste gnuplot.inp.tmp vgl1.tmp > vgl2.tmp
+  mv vgl2.tmp gnuplot.inp.tmp
+done
+
+if [ "$splines" = "true" ]; then          # Option S (Splinestellen anzeigen)
+  anzspl=`grep -A 1 "Spline" $1 | tail -n 1 | awk '{print $1}'`
+  cutoff=`grep -A 1 "Spline" $1 | tail -n 1 | awk '{print $2}'`
+  sed '/^ *$/d' $1 | tail -$anzspl | awk '{print $1, $3, $4, 2*$5}' > nurSplines.tmp
+  echo "$cutoff 0.0 0.0 0.0" >> nurSplines.tmp
+  echo >  vgl1.tmp
+  echo >> vgl1.tmp
+  wieoft=$(($ai+1))
+  for k in `seq $wieoft`
+  do 
+    echo ", \"nurSplines.tmp\" u 1:2 title \"knots\" lw 3 " >> vgl1.tmp
+    echo ", \"nurSplines.tmp\" u 1:3 title \"knots\" lw 3 " >> vgl1.tmp
+    echo ", \"nurSplines.tmp\" u 1:4 title \"knots\" lw 3 " >> vgl1.tmp
+  done
+  paste gnuplot.inp.tmp vgl1.tmp > vgl2.tmp
+  mv vgl2.tmp gnuplot.inp.tmp
+fi
+
+gnuplot < gnuplot.inp.tmp  
+
+if [ "$gv" = "true" ]; then           # Option ngv (n)
+  gv SplineAusw.tmp.ps
+fi
+
+if [ "$ogva" = "true" ]; then         # Option ogva (m)
+  head -n  2 gnuplot.inp.tmp >  gnuplot.inp.tmp2
+  tail -n +6 gnuplot.inp.tmp >> gnuplot.inp.tmp2
+  gnuplot < gnuplot.inp.tmp2
+  mv SplineAusw.tmp.ps Ansicht.$1.ps
+fi
+
+if [ "$ogv1" = "true" ]; then           # Option ogv1 (1)
+  head -2    gnuplot.inp.tmp >  gnuplot.inp.tmp2
+  tail -n +6 gnuplot.inp.tmp >> gnuplot.inp.tmp2
+  gnuplot < gnuplot.inp.tmp2
+  a2ps -o Ansicht.$1.1S.ps -6 SplineAusw.tmp.ps
+fi
+
+if [ "$savegnu" = "true" ]; then
+   mv gnuplot.inp.tmp $1.gnu
+   rm -f gnuplot.inp.tmp* paar.tmp $1.strucPunkte.tmp vgl1.tmp vgl2.tmp singleval.tmp
+else
+   rm -f SplineAusw.tmp* gnuplot.inp.tmp* nurSplines.tmp paar.tmp $1.strucPunkte.tmp vgl1.tmp vgl2.tmp singleval.tmp
+fi
+
