@@ -16,7 +16,7 @@ sed -i 's|CXXFLAGS    = -g -Wall|CXXFLAGS    = -g -fpermissive -Wall|' galib247/
 if [ $CXX == "g++" ]; then
   echo " " 
 elif [ $CXX == "icpc" ]; then
-  sed -i 's|g++|icpc|' galib247/makevars 
+  sed -i 's|g++|icpc -fPIC|' galib247/makevars 
 else
   echo "the compiler $CXX is not supported. Please select g++ or icpc"
   exit
