@@ -173,9 +173,13 @@ be provided also\@. \textbf{atomic\_energy} (can be calculated by DFT) is
 needed to fit atomization energy. If \textbf{element\_name} is not listed,
 the \textbf{atomic\_energy} will be optimized. You can interpret the
 meaning of \textbf{atomic\_energy} as: If \textbf{atomic\_energy} is
-provided, the absolute atomization energy will be fitted (by fitting atomization
-energy). If \textbf{atomic\_energy} is optimized (not provided), the
-relative atomization energy (reaction energy) will be fitted (by fitting atomization energy).
+provided, the absolute atomization energy will be fitted (by fitting
+atomization energy). If \textbf{atomic\_energy} is optimized (not
+provided), the relative atomization energy (reaction energy) will be fitted
+(by optimization of the atomic energy). This methodology was proposed by
+Gaus et al.\@ in the 3ob parameterization strategy for obtaining repulsive
+potentials, and their optimized atomic energies (used to generate the 3ob
+repulsives) were published in their supporting information.\cite{@ref}
 
 \textbf{Example:}
 \begin{b4table}
