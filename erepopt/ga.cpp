@@ -62,9 +62,9 @@ void MyGASimpleGA::initialstep(){
         abuffer[j]=genome.gene(j);
       }
       irank=i/(pop->size()/size);
-      MPI_Send(abuffer, length, MPI_FLOAT, irank, 111111*(i+1), MPI_COMM_WORLD);
+      MPI_Send(abuffer, length, MPI_DOUBLE, irank, 11111+(i+1), MPI_COMM_WORLD);
     }else if(rank != 0 && i>=start && i<end){
-      MPI_Recv(abuffer, length, MPI_FLOAT, 0, 111111*(i+1), MPI_COMM_WORLD, &status);
+      MPI_Recv(abuffer, length, MPI_DOUBLE, 0, 11111+(i+1), MPI_COMM_WORLD, &status);
       GA1DArrayGenome<double>& genome = (GA1DArrayGenome<double>&)pop->individual(i);
       for(j=0;j<length;j++){
         genome.gene(j,abuffer[j]);
@@ -82,17 +82,17 @@ void MyGASimpleGA::initialstep(){
   for (i=0; i<pop->size(); i++){
     if(rank != 0 && i>=start && i<end){
       buffer=pop->individual(i).score();
-      MPI_Send(&buffer, 1, MPI_FLOAT, 0, 222222*(i+1), MPI_COMM_WORLD);
+      MPI_Send(&buffer, 1, MPI_DOUBLE, 0, 22222+(i+1), MPI_COMM_WORLD);
 //    GA1DArrayGenome<double>& genome = (GA1DArrayGenome<double>&)pop->individual(i);
 //    for(j=0;j<length;j++){
 //      abuffer[j]=genome.gene(j);
 //    }
-//    MPI_Send(abuffer, length, MPI_FLOAT, 0, 333333*(i+1), MPI_COMM_WORLD);
+//    MPI_Send(abuffer, length, MPI_DOUBLE, 0, 333333*(i+1), MPI_COMM_WORLD);
     }else if(rank == 0 && i>=end) {
       irank=i/(pop->size()/size);
-      MPI_Recv(&buffer, 1, MPI_FLOAT, irank, 222222*(i+1), MPI_COMM_WORLD, &status);
+      MPI_Recv(&buffer, 1, MPI_DOUBLE, irank, 22222+(i+1), MPI_COMM_WORLD, &status);
       pop->individual(i).score(buffer);
-//    MPI_Recv(abuffer, length, MPI_FLOAT, irank, 333333*(i+1), MPI_COMM_WORLD, &status);
+//    MPI_Recv(abuffer, length, MPI_DOUBLE, irank, 333333*(i+1), MPI_COMM_WORLD, &status);
 //    GA1DArrayGenome<double>& genome = (GA1DArrayGenome<double>&)pop->individual(i);
 //    for(j=0;j<length;j++){
 //      genome.gene(j,abuffer[j]);
@@ -206,9 +206,9 @@ if(rank==0){
         abuffer[j]=genome.gene(j);
       }
       irank=i/(pop->size()/size);
-      MPI_Send(abuffer, length, MPI_FLOAT, irank, 111111*(i+1), MPI_COMM_WORLD);
+      MPI_Send(abuffer, length, MPI_DOUBLE, irank, 11111+(i+1), MPI_COMM_WORLD);
     }else if(rank != 0 && i>=start && i<end){
-      MPI_Recv(abuffer, length, MPI_FLOAT, 0, 111111*(i+1), MPI_COMM_WORLD, &status);
+      MPI_Recv(abuffer, length, MPI_DOUBLE, 0, 11111+(i+1), MPI_COMM_WORLD, &status);
       idx=0;
       GA1DArrayGenome<double>& genome = (GA1DArrayGenome<double>&)pop->individual(i);
       for(j=0;j<length;j++){
@@ -227,17 +227,17 @@ if(rank==0){
   for (i=0; i<pop->size(); i++){
     if(rank != 0 && i>=start && i<end){
       buffer=pop->individual(i).score();
-      MPI_Send(&buffer, 1, MPI_FLOAT, 0, 222222*(i+1), MPI_COMM_WORLD);
+      MPI_Send(&buffer, 1, MPI_DOUBLE, 0, 22222+(i+1), MPI_COMM_WORLD);
 //    GA1DArrayGenome<double>& genome = (GA1DArrayGenome<double>&)pop->individual(i);
 //    for(j=0;j<length;j++){
 //      abuffer[j]=genome.gene(j);
 //    }
-//    MPI_Send(abuffer, length, MPI_FLOAT, 0, 333333*(i+1), MPI_COMM_WORLD);
+//    MPI_Send(abuffer, length, MPI_DOUBLE, 0, 333333*(i+1), MPI_COMM_WORLD);
     }else if(rank == 0 && i>=end) {
       irank=i/(pop->size()/size);
-      MPI_Recv(&buffer, 1, MPI_FLOAT, irank, 222222*(i+1), MPI_COMM_WORLD, &status);
+      MPI_Recv(&buffer, 1, MPI_DOUBLE, irank, 22222+(i+1), MPI_COMM_WORLD, &status);
       pop->individual(i).score(buffer);
-//    MPI_Recv(abuffer, length, MPI_FLOAT, irank, 333333*(i+1), MPI_COMM_WORLD, &status);
+//    MPI_Recv(abuffer, length, MPI_DOUBLE, irank, 333333*(i+1), MPI_COMM_WORLD, &status);
 //    GA1DArrayGenome<double>& genome = (GA1DArrayGenome<double>&)pop->individual(i);
 //    for(j=0;j<length;j++){
 //      genome.gene(j,abuffer[j]);
