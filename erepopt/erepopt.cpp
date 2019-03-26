@@ -252,6 +252,41 @@ int main(int argc, char** argv){
     genome = ga.population().best();
     endgen=true;
     erepobj.get_residual(genome); 
+    idx=0;
+    for(j=0;j<erepobj.velem.size();j++){
+      for(k=0;k<erepobj.velem[j].lmax+2.;k++){
+         erepobj.velem[j].radius[k].r=genome.gene(idx);
+        idx++;  
+      }
+    }
+    if(ddh.td3){
+      for(j=0;j<ddh.d3.size();j++){ 
+        ddh.d3[j].value=genome.gene(idx);
+        idx++;
+      }
+    }
+    if(ddh.tdamph){
+      ddh.damph.value=genome.gene(idx);
+      idx++;
+    }
+    if(ddh.thubbardderivs){
+      for(j=0;j<ddh.hubbardderivs.size();j++){ 
+         ddh.hubbardderivs[j].value=genome.gene(idx);
+        idx++;
+      }
+    }
+    if(ddh.thubbards){
+      for(j=0;j<ddh.hubbards.size();j++){ 
+         ddh.hubbards[j].value=genome.gene(idx);
+        idx++;
+      }
+    }
+    if(ddh.tvorbes){
+      for(j=0;j<ddh.vorbes.size();j++){ 
+         ddh.vorbes[j].value=genome.gene(idx);
+        idx++;
+      }
+    }
    }
   }
 

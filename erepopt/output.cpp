@@ -52,7 +52,7 @@ void Erepobj::writeout(){
 
   fout<<"OPTIMAL RADII:"<<endl;
   int i,k;
-  fout<<"$atom_types:\n"; 
+  fout<<"$element_types:\n"; 
   for(i=0;i<velem.size();i++){
     fout<<std::fixed<<std::left;
     fout.width(3); fout<<velem[i].name;
