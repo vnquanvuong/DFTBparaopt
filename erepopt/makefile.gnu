@@ -7,7 +7,7 @@ LIBS= -lga
 all: erepopt
 
 erepopt: erepopt.o erepobj.o input.o output.o molecule.o skf.o tools.o ga.o erepobj.hpp molecule.hpp element.hpp tools.hpp ga.hpp ddh.hpp
-	$(MPICXX) -o erepopt erepopt.o erepobj.o input.o output.o molecule.o skf.o tools.o ga.o  $(LDFLAGS) $(LIBS) 
+	$(MPICXX) $(MPICXXFLAGS) $(INCLUDES) -o erepopt erepopt.o erepobj.o input.o output.o molecule.o skf.o tools.o ga.o  $(LDFLAGS) $(LIBS) 
 
 erepopt.o: erepopt.cpp erepobj.hpp molecule.hpp element.hpp tools.hpp ga.hpp ddh.hpp
 	$(MPICXX) $(MPICXXFLAGS) $(INCLUDES) -c erepopt.cpp  

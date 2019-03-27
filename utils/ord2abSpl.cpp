@@ -20,7 +20,7 @@ using namespace Eigen;
 
 class OrigRepr {
 public:
-  uint           nspl;
+  int           nspl;
   double         cutoff;
   double         A,B,C;   
   vector<double> splcoeff3;
@@ -33,7 +33,7 @@ public:
     B       = 0;
     C       = 0;
     splcoeff5.resize(6);
-    for (uint i=0;i<6;i++){
+    for (int i=0;i<6;i++){
       splcoeff5[i] = 0;
     }
   }
@@ -43,7 +43,7 @@ public:
 void ifnotfile(const string filename);
 OrigRepr calc_orig_mod1(const vector<double> &vr, const vector<double> &va, const double c1, const double cn);
 OrigRepr calc_orig_mod2(const vector<double> &vr, const vector<double> &v2nd);
-void writeorigabSpline (const vector<double> &vr, const vector<double> &va, const double c1, const double cn, const uint mod);
+void writeorigabSpline (const vector<double> &vr, const vector<double> &va, const double c1, const double cn, const int mod);
 int ilmsfit=2, idecompose=5;
 int main(int argc, char** argv){
 // writes repulsiv potential to standardout in .abSpline-format (from original dftb 1998)
@@ -74,8 +74,8 @@ int main(int argc, char** argv){
 
   string   str = argv[1];
   int      ordspl = atoi (argv[2]);
-  uint     mod = atoi (argv[3]);
-  uint     nspl;
+  int     mod = atoi (argv[3]);
+  int     nspl;
   double   cutoff;
 
   // check if modus is correct
@@ -99,9 +99,9 @@ int main(int argc, char** argv){
   vector<double> vr(nspl+1);
   vector<double> v2ch((ordspl+1)*nspl);
   
-  for (uint i=0; i < nspl; i++){  
+  for (int i=0; i < nspl; i++){  
     fin >> vr[i] >> str;
-    for (uint j=0; j <= ordspl; j++){
+    for (int j=0; j <= ordspl; j++){
       fin >> v2ch[i*(ordspl+1)+j];
     }
     getline(fin,str);
@@ -113,7 +113,7 @@ int main(int argc, char** argv){
   // determine parameters to ereprepr::calc_orig
   vector<double> vr_neu;
   vector<double> va;
-  uint           nspl_neu=0;
+  int           nspl_neu=0;
   double         c1=0,cn=0,cutoff_neu=0;
   if (argc >= 5){
     str = argv[4];
@@ -136,7 +136,7 @@ int main(int argc, char** argv){
 
     // read vr_hlp
     vector<double> vr_hlp(nspl_neu+1);
-    for (uint i=0; i < nspl_neu; i++){
+    for (int i=0; i < nspl_neu; i++){
       fin >> vr_hlp[i];
       getline(fin,str);
     }
@@ -150,7 +150,7 @@ int main(int argc, char** argv){
     }
     vr_neu.resize(nspl_neu + 1 - ii+1); 
     vr_neu[0] = vr[0];
-    for (uint j=1; j < vr_neu.size(); j++){
+    for (int j=1; j < vr_neu.size(); j++){
       vr_neu[j] = vr_hlp[j-1+ii];
     }
     nspl_neu = nspl_neu - ii+1;
@@ -158,7 +158,7 @@ int main(int argc, char** argv){
     // calculate c1, va, cn
     c1 = v2ch[2];
     va.resize(nspl_neu);
-    for (uint i=0; i < nspl_neu; i++){
+    for (int i=0; i < nspl_neu; i++){
       va[i] = 0;
       for (ii=0; ii<vr.size()-1;ii++){
         if      ( ii == vr.size()-2 && vr[ii] <= vr_neu[i] ) { break;} 
@@ -190,7 +190,7 @@ int main(int argc, char** argv){
     vr_neu.resize(vr.size());
     vr_neu = vr;
           va.resize(vr.size()-1);
-          for (uint i=0; i<va.size(); i++){
+          for (int i=0; i<va.size(); i++){
       if (mod == 1 ) {
         va[i] = v2ch[i*(ordspl+1)];
       }
@@ -267,18 +267,18 @@ OrigRepr calc_orig_mod1(const vector<double> &vr, const vector<double> &va, cons
   origrepr.cutoff = vr[vr.size()-1];
 
   origrepr.splcoeff3.resize(4*(origrepr.nspl-1)); 
-  for (uint i=0; i < 4*(origrepr.nspl-1); i++){
+  for (int i=0; i < 4*(origrepr.nspl-1); i++){
     origrepr.splcoeff3[i] = 0;
   }
 
-  uint cmatsize = origrepr.nspl - 2;
+  int cmatsize = origrepr.nspl - 2;
   MatrixXd cmat = MatrixXd::Zero(cmatsize,cmatsize);
   MatrixXd cvec = MatrixXd::Zero(cmatsize,1);
   // for more efficiency change cmat to tridiagonal matrix and solve eqsystem...
   // see Numerical Recipies in Fortran 77 2nd ed, Press, Teukolsky,... p.43
-  for (uint i=0; i<cmatsize; i++){
+  for (int i=0; i<cmatsize; i++){
     cvec(i,0) = 0;
-    for(uint j=0; j<cmatsize;j++){
+    for(int j=0; j<cmatsize;j++){
       cmat(i,j) = 0;
     }
   }
@@ -295,7 +295,7 @@ OrigRepr calc_orig_mod1(const vector<double> &vr, const vector<double> &va, cons
   cmat(0,1) = delta2;
   cvec(0,0) = 3*( (a3-a2)/delta2 - (a2-a1)/delta1 ) - c1*delta1;
 
-  for (uint i=1; i < cmatsize-1; i++){
+  for (int i=1; i < cmatsize-1; i++){
     delta1 = delta2;
     delta2 = vr[i+2]-vr[i+1];
     a1     = a2;
@@ -341,7 +341,7 @@ OrigRepr calc_orig_mod1(const vector<double> &vr, const vector<double> &va, cons
   }
 
   // create splcoeff3
-  for (uint i=0; i < origrepr.nspl-1; i++){
+  for (int i=0; i < origrepr.nspl-1; i++){
     a1     = va[i];
     a2     = va[i+1];
     delta1 = vr[i+1]-vr[i];
@@ -428,12 +428,12 @@ OrigRepr calc_orig_mod2(const vector<double> &vr, const vector<double> &v2nd){
   ///// initialization /////
   OrigRepr origrepr;
 
-  uint n          = vr.size() -1;
+  int n          = vr.size() -1;
   origrepr.nspl   = vr.size()-1;
   origrepr.cutoff = vr[vr.size()-1];
 
   origrepr.splcoeff3.resize(4*(n-1)); 
-  for (uint i=0; i < 4*(n-1); i++){
+  for (int i=0; i < 4*(n-1); i++){
     origrepr.splcoeff3[i] = 0;
   }
 
@@ -471,7 +471,7 @@ OrigRepr calc_orig_mod2(const vector<double> &vr, const vector<double> &v2nd){
   return origrepr;
 }
 
-void writeorigabSpline (const vector<double> &vr, const vector<double> &va, const double c1, const double cn, const uint mod){
+void writeorigabSpline (const vector<double> &vr, const vector<double> &va, const double c1, const double cn, const int mod){
   // writes repulsiv potential to standardout in .abSpline-format (from original dftb 1998)
   //
   // vr    : knot vector inclusive cutoff
@@ -479,7 +479,7 @@ void writeorigabSpline (const vector<double> &vr, const vector<double> &va, cons
   // c1    : second derivative devided by two at the first point of the curve
   // cn    : second derivative at vr[vr.size()-2] (one before the cutoff point)
 
-  uint icoeff=0;
+  int icoeff=0;
 
   OrigRepr origrepr;
   if ( mod == 1 ) origrepr = calc_orig_mod1(vr,va,c1,cn);
@@ -492,10 +492,10 @@ void writeorigabSpline (const vector<double> &vr, const vector<double> &va, cons
   cout << scientific << setprecision(15) << origrepr.A << "  " << origrepr.B << "  " << origrepr.C << endl;
   
   // 3rd order splines
-  for (uint i=0; i < vr.size()-2; i++ ){
+  for (int i=0; i < vr.size()-2; i++ ){
     cout << setiosflags(ios::showpoint) << resetiosflags(ios::scientific);
           cout << setprecision(6) << setw(8) << vr[i] << "  " << setw(8) << vr[i+1] << "   ";
-    for (uint j=0; j <= 3; j++){
+    for (int j=0; j <= 3; j++){
                 cout << setprecision(15) << scientific << setw(23) << origrepr.splcoeff3[icoeff] << " ";
           icoeff++;
     }
@@ -505,7 +505,7 @@ void writeorigabSpline (const vector<double> &vr, const vector<double> &va, cons
   // 5th order spline (last)
   cout << setiosflags(ios::showpoint) << resetiosflags(ios::scientific);
         cout << setprecision(6) << setw(8) << vr[vr.size()-2] << "  " << setw(8) << vr[vr.size()-1] << "   ";
-  for (uint i=0; i <= 5; i++){
+  for (int i=0; i <= 5; i++){
     cout << setprecision(15) << scientific << setw(23) << origrepr.splcoeff5[i] << " "; 
   }
   cout << endl;

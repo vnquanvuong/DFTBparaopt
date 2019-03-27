@@ -7,7 +7,7 @@ LIBS= -lga #-lopenblas
 all: repopt
 
 repopt: repopt.o allequations.o molecule.o tools.o input.o output.o ga.o allequations.hpp auxiliary.hpp ga.hpp tools.hpp 
-	$(CXX) -o repopt repopt.o allequations.o molecule.o tools.o input.o output.o ga.o $(LDFLAGS) $(LIBS) 
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o repopt repopt.o allequations.o molecule.o tools.o input.o output.o ga.o $(LDFLAGS) $(LIBS) 
 
 repopt.o: repopt.cpp allequations.hpp auxiliary.hpp tools.hpp ga.hpp 
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c repopt.cpp  

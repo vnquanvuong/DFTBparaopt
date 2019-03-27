@@ -13,7 +13,7 @@ sed -i'' -e 's/ initializer(GA/ this->initializer(GA/g' galib247/ga/GA1DArrayGen
 sed -i'' -e 's/ mutator(GA/ this->mutator(GA/g' galib247/ga/GA1DArrayGenome.C galib247/ga/GA2DArrayGenome.C galib247/ga/GA3DArrayGenome.C
 sed -i'' -e 's/ comparator(GA/ this->comparator(GA/g' galib247/ga/GA1DArrayGenome.C galib247/ga/GA2DArrayGenome.C galib247/ga/GA3DArrayGenome.C
 sed -i'' -e 's/ crossover(GA/ this->crossover(GA/g' galib247/ga/GA1DArrayGenome.C galib247/ga/GA2DArrayGenome.C galib247/ga/GA3DArrayGenome.C
-sed -i'' -e 's|$(INSTALL) $(LIB) $(LIB_DEST_DIR)|$(MKDIR) $(LIB_DEST_DIR)\n\t$(MKDIR) $(HDR_DEST_DIR)\n\t$(INSTALL) $(LIB) $(LIB_DEST_DIR)|' galib247/ga/makefile
+sed -i'' -e 's|$(INSTALL) $(LIB) $(LIB_DEST_DIR)|$(MKDIR) $(LIB_DEST_DIR); $(MKDIR) $(HDR_DEST_DIR); $(INSTALL) $(LIB) $(LIB_DEST_DIR)|' galib247/ga/makefile
 sed -i'' -e 's|TMPDIR=/var/tmp|TMPDIR=.|' galib247/makefile
 sed -i'' -e 's|DESTDIR=/usr/local|DESTDIR=../|' galib247/makevars 
 sed -i'' -e 's|CXXFLAGS    = -g -Wall|CXXFLAGS    = -g -fpermissive -Wall|' galib247/makevars 
@@ -76,3 +76,11 @@ fi
 make clean 
 make all | tee make.log
 cd ../
+
+path=`pwd`
+cat >DFTBparaopt_on.rc<< EOF
+export PATH=$path/repopt:\$PATH
+export PATH=$path/erepopt:\$PATH
+export PATH=$path/utils:\$PATH
+EOF
+
