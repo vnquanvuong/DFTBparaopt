@@ -10,11 +10,11 @@ $genetic_algorithm:
   runtest         0
   score_type      2 
   read_spline     1
-  popsizemax      1 #100
-  preserved_num   10
-  destroy_num     1
+  popsizemax      1000
+  preserved_num   100
+  destroy_num     10
   popsizemin      1
-  ngen            0 #1000
+  ngen            500
   pmut            0.03
   pcross          0.90
   grid_update     0

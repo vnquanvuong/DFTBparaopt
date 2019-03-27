@@ -2,6 +2,7 @@ $system:
   dftb_version    dftb+
   idecompose      6
   ilmsfit         4
+  nreplicate      1
 $end
 
 $genetic_algorithm:
@@ -9,13 +10,14 @@ $genetic_algorithm:
   runtest         0
   score_type      2 
   read_spline     1
-  popsize         1
-  ngen            0
+  popsizemax      1
   preserved_num   0
   destroy_num     0
   popsizemin      1
+  ngen            0
   pmut            0.05
   pcross          0.90
+  grid_update     0
 $end
 
 $element_types:# atom type, eatom
