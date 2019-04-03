@@ -1,4 +1,4 @@
-# DFTBopt: a package to optimize repulsive potentials and electronic parameters for the Density Functional Tight Binding (DFTB) method.
+# DFTBparaopt: a package to optimize repulsive potentials and electronic parameters for the Density Functional Tight Binding (DFTB) method.
 
 The package includes two main programs: 
 
@@ -13,7 +13,7 @@ In addition, the package also provide some tools to analyze or evaluate new DFTB
 Requirements
 ============
 
-In order to install DFTBopt, you need the following software components:
+In order to install DFTBparaopt, you need the following software components:
 
 * GNU make
 
@@ -24,18 +24,18 @@ In order to install DFTBopt, you need the following software components:
 
 Installation
 =========
-Change to directory DFTBopt and type 
+Change to directory DFTBparaopt and type 
 
 ./install.sh 
 
-Currently, DFTBopt was tested for two compilers: GNU(g++) and INTEL(icpc).
+Currently, DFTBparaopt was tested for two compilers: GNU(g++) and INTEL(icpc).
 You can choose the compiler by setting $CXX=“g++” or $CXX=“icpc” in the “install.sh” file.
 To compile “erepopt”, a MPI library is also required. The install.sh script will try to get all the
 required library and compile the code. You might have to adjust some flags in the makefile.
 After the compilation, if you use bash, you can add following command to you “.bashrc” 
-or run it before using DFTBopt,
+or run it before using DFTBparaopt,
 
-source path-to-DFTBopt-directory/dftbopt_on.bash
+source path-to-DFTBparaopt-directory/DFTBparaopt_on.rc
 
 Document
 =============
