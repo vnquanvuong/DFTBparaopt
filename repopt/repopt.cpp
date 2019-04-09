@@ -40,7 +40,7 @@ int main(int argc, char** argv){
   int i,j,length,k,idx; 
   double tmp;
   Timer gtime;
-  ddh.td3=ddh.tdamph=ddh.thubbardderivs=false;
+  ddh.td3=ddh.tdamph=ddh.thubbardderivs=ddh.thirdorderfull=ddh.tdamphver2=false;
   if ( argc < 2 ){
     cerr << "usage: repopt inputfile" << endl;
     exit(1);
@@ -71,6 +71,7 @@ int main(int argc, char** argv){
     if(ddh.td3) length+=ddh.d3.size(); 
     if(ddh.tdamph) length+=1;
     if(ddh.thubbardderivs) length+=ddh.hubbardderivs.size(); 
+    if(ddh.tdamphver2) length+=ddh.damphver2.size(); 
 
     GA1DArrayGenome<double> genome(length, MyObjective);
     genome.initializer(::MyInitializer);
@@ -153,6 +154,12 @@ int main(int argc, char** argv){
         idx++;
       }
     }
+    if(ddh.tdamphver2){
+      for(i=0;i<ddh.damphver2.size();i++){ 
+        ddh.damphver2[i].value=genome.gene(idx);
+        idx++;
+      }
+    }
     for(i=0;i<allequations.vpot.size();i++){ 
       for(j=1;j<allequations.vpot[i].nknots-1;j++){
         for(k=j+1;k<allequations.vpot[i].nknots-1;k++){
@@ -189,17 +196,12 @@ int main(int argc, char** argv){
     MyObjective(genome); 
   }
 
-  //cout<<inputfilename.c_str()<<endl;
-  //if( ddh.td3 || ddh.tdamph || ddh.thubbardderivs) allequations.rereadmol(inputfilename.c_str());
   allequations.reset();
   allequations.score();
   if(runtest){
-   //cout<<"final_score: \n"<<allequations.restotU/(allequations.nrows-allequations.nspleq)<<endl; cout.flush();
     cout<<"final_score: \n"<<sqrt(allequations.restot2/(allequations.nrows-allequations.nspleq))<<endl; cout.flush();
   }
   allequations.writeout();
-  //vector<double> = allequations.get_coeff();
-  //vector<double> = allequations.get_veatom();
 
   cout<<"\n\nrepopt  total run time:  " <<gtime.elapsed() << " seconds to run.\n";
   cout << "** repopt normal termination **" << endl << endl;
@@ -239,6 +241,12 @@ double MyObjective(GAGenome& g) {
   if(ddh.thubbardderivs){
     for(i=0;i<ddh.hubbardderivs.size();i++){ 
       ddh.hubbardderivs[i].value=genome.gene(idx);
+      idx++;
+    }
+  }
+  if(ddh.tdamphver2){
+    for(i=0;i<ddh.damphver2.size();i++){ 
+      ddh.damphver2[i].value=genome.gene(idx);
       idx++;
     }
   }
@@ -497,6 +505,12 @@ void MyInitializer(GAGenome& g) {
         ddh.hubbardderivs[i].value = tmp;
       }
     }
+    if(ddh.tdamphver2){
+      for(i=0; i<ddh.damphver2.size(); i++){
+        tmp=GARandomFloat(ddh.damphver2[i].min,ddh.damphver2[i].max);
+        ddh.damphver2[i].value = tmp;
+      }
+    }
   }
   idx=0;
   for(i=0;i<allequations.vpot.size();i++){ 
@@ -518,6 +532,12 @@ void MyInitializer(GAGenome& g) {
   if(ddh.thubbardderivs){
     for(i=0;i<ddh.hubbardderivs.size();i++){ 
       genome.gene(idx,ddh.hubbardderivs[i].value);
+      idx++;
+    }
+  }
+  if(ddh.tdamphver2){
+    for(i=0;i<ddh.damphver2.size();i++){ 
+      genome.gene(idx,ddh.damphver2[i].value);
       idx++;
     }
   }
@@ -551,6 +571,12 @@ int MyMutator(GAGenome& g, double pmut){
   if(ddh.thubbardderivs){
     for(i=0;i<ddh.hubbardderivs.size();i++){ 
       ddh.hubbardderivs[i].value=child.gene(idx);
+      idx++;
+    }
+  }
+  if(ddh.tdamphver2){
+    for(i=0;i<ddh.damphver2.size();i++){ 
+      ddh.damphver2[i].value=child.gene(idx);
       idx++;
     }
   }
@@ -663,6 +689,34 @@ int MyMutator(GAGenome& g, double pmut){
     }
     tnMut+=iMut;
   }
+  if(ddh.tdamphver2){
+    ntmp=ddh.damphver2.size();
+    fMut = pmut*(double)(ntmp) ;
+    if(fMut < 1.0){
+      iMut = 0;
+      for(i=0; i<ntmp; i++){
+        if(GAFlipCoin(pmut)){
+          value  = GAGaussianFloat(gauss_dev);
+          value += ddh.damphver2[i].value;
+          value = GAMax(ddh.damphver2[i].min, value);
+          value = GAMin(ddh.damphver2[i].max, value);
+          ddh.damphver2[i].value = value;
+          iMut++;
+        }
+      }
+    }else{
+      iMut = (int)(fMut); 
+      for(k=0; k<iMut; k++){
+        i = GARandomInt(0,ntmp-1);
+        value  = GAGaussianFloat(gauss_dev);
+        value += ddh.damphver2[i].value;
+        value = GAMax(ddh.damphver2[i].min, value);
+        value = GAMin(ddh.damphver2[i].max, value);
+        ddh.damphver2[i].value = value;
+      }
+    }
+    tnMut+=iMut;
+  }
  
   //convert from data to gene
   idx=0;
@@ -685,6 +739,12 @@ int MyMutator(GAGenome& g, double pmut){
   if(ddh.thubbardderivs){
     for(i=0;i<ddh.hubbardderivs.size();i++){ 
       child.gene(idx,ddh.hubbardderivs[i].value);
+      idx++;
+    }
+  }
+  if(ddh.tdamphver2){
+    for(i=0;i<ddh.damphver2.size();i++){ 
+      child.gene(idx,ddh.damphver2[i].value);
       idx++;
     }
   }

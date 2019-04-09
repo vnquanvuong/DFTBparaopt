@@ -155,11 +155,20 @@ void Molecule::init(const string& xyzfilename, const double ediss_, const double
         outfile<<"DampXHExponent = "<<ddh.damph.value<<endl; 
       }
       if(ddh.thubbardderivs){
-        outfile<<"ThirdOrderFull = Yes\n"; 
+        if(ddh.thirdorderfull) outfile<<"ThirdOrderFull = Yes\n"; 
+        else  outfile<<"ThirdOrder = Yes\n"; 
         outfile<<"HubbardDerivs {\n"; 
         for(i=0;i<ddh.hubbardderivs.size();i++){ 
           outfile.precision(ddh.hubbardderivs[i].precision);
           outfile<<ddh.hubbardderivs[i].name<<" = "<<ddh.hubbardderivs[i].value<<endl;
+        }
+        outfile<<"}\n"; 
+      }
+      if(ddh.tdamphver2){
+        outfile<<"HCorrection = DampingVer2 {\n"; 
+        for(i=0;i<ddh.damphver2.size();i++){ 
+          outfile.precision(ddh.damphver2[i].precision);
+          outfile<<ddh.damphver2[i].name<<" = "<<ddh.damphver2[i].value<<endl;
         }
         outfile<<"}\n"; 
       }

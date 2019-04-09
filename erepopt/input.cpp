@@ -228,6 +228,7 @@ void Erepobj::readinp(const string inputfile){
         else if(ddh.damph.precision==4) ddh.damph.delta=0.0001;
         else if(ddh.damph.precision==5) ddh.damph.delta=0.00001;
       }else if(stemp.find("$hubbardderivs:")!=string::npos){
+        ddh.thirdorderfull=false;
         ntmp=0;
         while(infile.getline(cline,512)){
           remove_comment(cline);
@@ -252,6 +253,59 @@ void Erepobj::readinp(const string inputfile){
           else if(ddh.hubbardderivs[i].precision==3) ddh.hubbardderivs[i].delta=0.001;
           else if(ddh.hubbardderivs[i].precision==4) ddh.hubbardderivs[i].delta=0.0001;
           else if(ddh.hubbardderivs[i].precision==5) ddh.hubbardderivs[i].delta=0.00001;
+        }
+      }else if(stemp.find("$hubbardderivsfull:")!=string::npos){
+        ddh.thirdorderfull=true;
+        ntmp=0;
+        while(infile.getline(cline,512)){
+          remove_comment(cline);
+          stemp=cline;
+          if(stemp.find("$end")!=string::npos) break;
+          if(sscanf(cline,"%s",ctemp)<0) continue;
+          if(ctemp[0]=='#' ) continue ;
+          sscanf(cline,"%s %le %le %le %d",ctemp1,&fmin,&ftmp,&fmax,&itmp);
+          ddh.hubbardderivs.resize(ntmp+1);
+          ddh.hubbardderivs[ntmp].name=ctemp1;
+          ddh.hubbardderivs[ntmp].min=fmin;
+          ddh.hubbardderivs[ntmp].value=ftmp;
+          ddh.hubbardderivs[ntmp].max=fmax;
+          ddh.hubbardderivs[ntmp].precision=itmp;
+          ntmp++;
+        }
+        if(ntmp>0) ddh.thubbardderivs=true;
+        for(i=0;i<ddh.hubbardderivs.size();i++){ 
+          if     (ddh.hubbardderivs[i].precision==0) ddh.hubbardderivs[i].delta=1.0;
+          else if(ddh.hubbardderivs[i].precision==1) ddh.hubbardderivs[i].delta=0.1;
+          else if(ddh.hubbardderivs[i].precision==2) ddh.hubbardderivs[i].delta=0.01;
+          else if(ddh.hubbardderivs[i].precision==3) ddh.hubbardderivs[i].delta=0.001;
+          else if(ddh.hubbardderivs[i].precision==4) ddh.hubbardderivs[i].delta=0.0001;
+          else if(ddh.hubbardderivs[i].precision==5) ddh.hubbardderivs[i].delta=0.00001;
+        }
+      }else if(stemp.find("$damphver2:")!=string::npos){
+        ntmp=0;
+        while(infile.getline(cline,512)){
+          remove_comment(cline);
+          stemp=cline;
+          if(stemp.find("$end")!=string::npos) break;
+          if(sscanf(cline,"%s",ctemp)<0) continue;
+          if(ctemp[0]=='#' ) continue ;
+          sscanf(cline,"%s %le %le %le %d",ctemp1,&fmin,&ftmp,&fmax,&itmp);
+          ddh.damphver2.resize(ntmp+1);
+          ddh.damphver2[ntmp].name=ctemp1;
+          ddh.damphver2[ntmp].min=fmin;
+          ddh.damphver2[ntmp].value=ftmp;
+          ddh.damphver2[ntmp].max=fmax;
+          ddh.damphver2[ntmp].precision=itmp;
+          ntmp++;
+        }
+        if(ntmp>0) ddh.tdamphver2=true;
+        for(i=0;i<ddh.damphver2.size();i++){ 
+          if     (ddh.damphver2[i].precision==0) ddh.damphver2[i].delta=1.0;
+          else if(ddh.damphver2[i].precision==1) ddh.damphver2[i].delta=0.1;
+          else if(ddh.damphver2[i].precision==2) ddh.damphver2[i].delta=0.01;
+          else if(ddh.damphver2[i].precision==3) ddh.damphver2[i].delta=0.001;
+          else if(ddh.damphver2[i].precision==4) ddh.damphver2[i].delta=0.0001;
+          else if(ddh.damphver2[i].precision==5) ddh.damphver2[i].delta=0.00001;
         }
       }else if(stemp.find("$hubbards:")!=string::npos){
         ntmp=0;

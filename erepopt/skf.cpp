@@ -82,6 +82,7 @@ void Erepobj::writeskgen(const string& tmp_dir, const GAGenome& g) {
   if(ddh.td3) idx0=idx0+ddh.d3.size();
   if(ddh.tdamph) idx0++;
   if(ddh.thubbardderivs) idx0=idx0+ddh.hubbardderivs.size();
+  if(ddh.tdamphver2) idx0=idx0+ddh.damphver2.size();
 
   fout.precision(6);
   fout<<"SkdefVersion = 1\n\
@@ -937,6 +938,7 @@ void Erepobj::makeskf(const GAGenome& g) {
   if(ddh.td3) idx=idx+ddh.d3.size();
   if(ddh.tdamph) idx++;
   if(ddh.thubbardderivs) idx=idx+ddh.hubbardderivs.size();
+  if(ddh.tdamphver2) idx=idx+ddh.damphver2.size();
 
   part3="";
   if(ddh.thubbards){

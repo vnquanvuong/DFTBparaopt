@@ -740,10 +740,10 @@ void Allequations::svd_fulfill_spleq(){
       }
       vunknown[icolunknown+a_svd] = a4_el[icola4];
       icola4++;
-      for (int ia=a_svd+1; ia <= vpot[ipot].ordspl; ia++){
-        vunknown[icolunknown+ia] = a3[icola3];
-        icola3++;
-      }
+      //for (int ia=a_svd+1; ia <= vpot[ipot].ordspl; ia++){
+      //  vunknown[icolunknown+ia] = a3[icola3];
+      //  icola3++;
+      //}
       icolunknown += vpot[ipot].ordspl+1 ;
     }
   }
@@ -767,7 +767,7 @@ void Allequations::svd_fulfill_spleq(){
 void Allequations::get_residual() {
 
   double tmp;
-  vres = vref - eqmat*vunknown;
+  vres = eqmat*vunknown - vref;
   
   restotS=0;reseS=0;resfS=0;resaddS=0;resreaS=0;ressmoothS=0;
   restotU=0;reseU=0;resfU=0;resaddU=0;resreaU=0;ressmoothU=0;

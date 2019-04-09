@@ -97,6 +97,15 @@ void Erepobj::writeout(){
     }
     fout<<"$end\n"; 
   }
+  if(ddh.tdamphver2){
+    fout<<"$damphver2:\n"; 
+    for(int i=0;i<ddh.damphver2.size();i++){ 
+      fout.precision(ddh.damphver2[i].precision);
+    //fout<<ddh.damphver2[i].name<<" "<<ddh.damphver2[i].min<<" "<<ddh.damphver2[i].value<<" "<<ddh.damphver2[i].max<<" "<<ddh.damphver2[i].precision<<endl;
+      fout<<ddh.damphver2[i].name<<" "<<ddh.damphver2[i].value<<" "<<ddh.damphver2[i].value<<" "<<ddh.damphver2[i].value<<" "<<ddh.damphver2[i].precision<<endl;
+    }
+    fout<<"$end\n"; 
+  }
   if(ddh.thubbards){
     fout<<"$hubbards:\n"; 
     for(int i=0;i<ddh.hubbards.size();i++){ 

@@ -19,7 +19,10 @@ struct sddh {
   bool                tdamph;
   sdatapoint          damph;
   bool                thubbardderivs;
+  bool                thirdorderfull;
   vector<sdatapoint>  hubbardderivs;
+  bool                tdamphver2;
+  vector<sdatapoint>  damphver2;
 };
 
 class sdivision {

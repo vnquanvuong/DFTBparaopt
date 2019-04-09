@@ -33,6 +33,8 @@ public:
   int       nelem;
   int       natom,ncontraineda;
   double    eweight, fweight;   // weight for energy and force condition (if =0 no equation is set up)
+  bool      pbc;
+  int       pbctype;
 
   vector<string> atomname;
   vector<string> elemname;
@@ -40,6 +42,7 @@ public:
   vector<int>    atomindex;
   vector<int>    contraineda;
 
+  double latvec[3][3];
   MatrixXd coord;
   MatrixXd dist;
   MatrixXd frefmel;

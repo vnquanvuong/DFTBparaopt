@@ -133,6 +133,7 @@ void Allequations::readinp(const string inputfile){
         }
       }else if(stemp.find("$hubbardderivs:")!=string::npos){
         ddh.thubbardderivs=true;
+        ddh.thirdorderfull=false;
         ntmp=0;
         while(infile.getline(cline,512)){
           remove_comment(cline);
@@ -147,6 +148,43 @@ void Allequations::readinp(const string inputfile){
           ddh.hubbardderivs[ntmp].value=ftmp;
           ddh.hubbardderivs[ntmp].max=fmax;
           ddh.hubbardderivs[ntmp].precision=itmp;
+          ntmp++;
+        }
+      }else if(stemp.find("$hubbardderivsfull:")!=string::npos){
+        ddh.thubbardderivs=true;
+        ddh.thirdorderfull=true;
+        ntmp=0;
+        while(infile.getline(cline,512)){
+          remove_comment(cline);
+          stemp=cline;
+          if(stemp.find("$end")!=string::npos) break;
+          if(sscanf(cline,"%s",ctemp)<0) continue;
+          if(ctemp[0]=='#' ) continue ;
+          sscanf(cline,"%s %le %le %le %d",ctemp1,&fmin,&ftmp,&fmax,&itmp);
+          ddh.hubbardderivs.resize(ntmp+1);
+          ddh.hubbardderivs[ntmp].name=ctemp1;
+          ddh.hubbardderivs[ntmp].min=fmin;
+          ddh.hubbardderivs[ntmp].value=ftmp;
+          ddh.hubbardderivs[ntmp].max=fmax;
+          ddh.hubbardderivs[ntmp].precision=itmp;
+          ntmp++;
+        }
+      }else if(stemp.find("$damphver2:")!=string::npos){
+        ddh.tdamphver2=true;
+        ntmp=0;
+        while(infile.getline(cline,512)){
+          remove_comment(cline);
+          stemp=cline;
+          if(stemp.find("$end")!=string::npos) break;
+          if(sscanf(cline,"%s",ctemp)<0) continue;
+          if(ctemp[0]=='#' ) continue ;
+          sscanf(cline,"%s %le %le %le %d",ctemp1,&fmin,&ftmp,&fmax,&itmp);
+          ddh.damphver2.resize(ntmp+1);
+          ddh.damphver2[ntmp].name=ctemp1;
+          ddh.damphver2[ntmp].min=fmin;
+          ddh.damphver2[ntmp].value=ftmp;
+          ddh.damphver2[ntmp].max=fmax;
+          ddh.damphver2[ntmp].precision=itmp;
           ntmp++;
         }
       }else if(stemp.find("$potentials:")!=string::npos){
@@ -287,34 +325,6 @@ void Allequations::readinp(const string inputfile){
       }
     }   
   }
-//for (int ipot=0; ipot<vpot.size(); ipot++ ) 
-//  cout << vpot[ipot].potname << "    " << vpot[ipot].max_expand*AA_Bohr  << "    " << vpot[ipot].gridname 
-//       << "    " << vpot[ipot].ordspl << "    " << vpot[ipot].smooth_order  << "    " << vpot[ipot].aa  << endl << endl;
-//  cout<<"end of reading input\n";
-//    if(td3){
-//      cout<<"$d3:\n"; 
-//      for(int i=0;i<d3.size();i++){ 
-//        cout.precision(d3[i].precision) ;
-//        cout<<d3[i].name<<" "<<d3[i].min<<" "<<d3[i].value<<" "<<d3[i].max<<" "<<d3[i].precision<<endl;
-//      }
-//      cout<<"$end\n"; 
-//    }
-//    if(tdamph){
-//      cout<<"$damph:\n"; 
-//      cout.precision(damph.precision);
-//        cout<<damph.min<<" "<<damph.value<<" "<<damph.max<<" "<<damph.precision<<endl;
-//      cout<<"$end\n"; 
-//    }
-//    if(thubbardderivs){
-//      cout<<"$hubbardderivs:\n"; 
-//      for(int i=0;i<hubbardderivs.size();i++){ 
-//        cout.precision(hubbardderivs[i].precision);
-//        cout<<hubbardderivs[i].name<<" "<<hubbardderivs[i].min<<" "<<hubbardderivs[i].value<<" "<<hubbardderivs[i].max<<" "<<hubbardderivs[i].precision<<endl;
-//      }
-//      cout<<"$end\n"; 
-//    }
-
-
 }
 
 

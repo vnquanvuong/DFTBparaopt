@@ -39,6 +39,7 @@ void MyGASimpleGA::initialstep(){
   if(ddh.td3) length+=ddh.d3.size(); 
   if(ddh.tdamph) length+=1;
   if(ddh.thubbardderivs) length+=ddh.hubbardderivs.size(); 
+  if(ddh.tdamphver2) length+=ddh.damphver2.size(); 
   if(ddh.thubbards) length+=ddh.hubbards.size(); 
   if(ddh.tvorbes) length+=ddh.vorbes.size(); 
 
@@ -122,6 +123,7 @@ void MyGASimpleGA::step() {
   if(ddh.td3) length+=ddh.d3.size(); 
   if(ddh.tdamph) length+=1;
   if(ddh.thubbardderivs) length+=ddh.hubbardderivs.size(); 
+  if(ddh.tdamphver2) length+=ddh.damphver2.size(); 
   if(ddh.thubbards) length+=ddh.hubbards.size(); 
   if(ddh.tvorbes) length+=ddh.vorbes.size(); 
 
