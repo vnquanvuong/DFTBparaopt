@@ -11,9 +11,11 @@ using namespace std;
 extern bool runtest;
 extern sddh ddh;
 extern void remove_comment(char *cstr);
+extern int dftbout_new;
 void Molecule::init(const string& xyzfilename, const double ediss_, const double eweight_, const double fweight_,
                     const string& dftbin_,     const string abbr_ , const string& dftbversion, const string& finp_) {
   char ctline[512];
+  double dtmp;
   string stmp;
   fstream infile,outfile;
   name    = xyzfilename;
@@ -206,6 +208,7 @@ void Molecule::init(const string& xyzfilename, const double ediss_, const double
       }else if(stemp.find("Total Forces")!=string::npos){
         passf=true;
         for (int i=0; i<natom ; i++) {
+          if(dftbout_new) fin >>  dtmp;
           fin >> fel(i,0) >> fel(i,1) >> fel(i,2);
         }
       }else if(stemp.find("SCC is NOT converged")!=string::npos){
@@ -218,6 +221,7 @@ void Molecule::init(const string& xyzfilename, const double ediss_, const double
       }else if(stemp.find("Total Forces")!=string::npos){
         passf=true;
         for (int i=0; i<natom ; i++) {
+          if(dftbout_new) fin >>  dtmp;
           fin >> fel(i,0) >> fel(i,1) >> fel(i,2);
         }
       }else if(stemp.find("SCC is NOT converged")!=string::npos){

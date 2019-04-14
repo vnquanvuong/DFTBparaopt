@@ -1,11 +1,11 @@
 #ifndef EREPFIT_H
 #define EREPFIT_H
 
-#include<vector>
+#include <vector>
 #include <ga/ga.h>
 #include <ga/std_stream.h>
-#include"molecule.hpp"
-#include"element.hpp"
+#include "molecule.hpp"
+#include "element.hpp"
 
 class Erepobj {
 protected:
@@ -17,13 +17,14 @@ protected:
   void readinp(const string inputfile);
   void writeskgen(const string& tmp_dir, const GAGenome& g );
 public:
-  int  fit_type; 
+  int  fit_type,skdefversion; 
   int  nelem, ncompound;
-  bool lc,onsiten,onsitep; 
-  double omega,esn,esp;
+  bool lc; 
+  double omega;
+  string skgen,onecent,twocent,libdir,libadddir,xcfunctional,superposition;
 //bool repexist[100][100],addskf,skfexist[100][100];
   bool addskf,addrep;
-  string dftbversion,skgen,onecent,twocent,libdir,libadddir,repadddir,outfilename,fgrid,fdftb_inp,frep_in,gasrepfit;
+  string dftbversion,repadddir,outfilename,fgrid,frep_in,repopt;
   double restotS,rescS,resevS; // MSE of residuals (mean signed error)
   double restotU,rescU,resevU; // MUE of residuals (mean unsigned error)
   double restot2,resc2,resev2;  // RMS of residuals (root mean square)
@@ -42,6 +43,9 @@ public:
   vector<Element> velem;
   vector<double> atomicenergy;
   vector<string> atomicname;
+  vector<Atomparameters> atomparameters;
+  vector<string> onecenterparameters;
+  vector<string> twocenterparameters;
   ofstream fout;
 
 };

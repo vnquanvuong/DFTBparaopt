@@ -76,10 +76,9 @@ double Erepobj::score(int id){
   }else{
     score=999999999.9;
     call  = "cp -rf "+fgrid+" "+skf_dir+";";
-//  call += "cp -rf "+fdftb_inp+" "+skf_dir+";";
 //  call += "cp "+frep_in+" "+skf_dir+"/rep.in;";
-//  call += "cd "+skf_dir+"/; "+ gasrepfit +" "+ frep_in +">rep.out; " + "cd ../ ";
-    call += "cd "+skf_dir+"/; export OMP_NUM_THREADS="+itoa(cpu_number,10)+";"+ gasrepfit +" rep.in >rep.out; " + "cd ../ ";
+//  call += "cd "+skf_dir+"/; "+ repopt +" "+ frep_in +">rep.out; " + "cd ../ ";
+    call += "cd "+skf_dir+"/; export OMP_NUM_THREADS="+itoa(cpu_number,10)+";"+ repopt +" rep.in >rep.out; " + "cd ../ ";
 
     iq = system(call.c_str());	
 
@@ -88,7 +87,7 @@ double Erepobj::score(int id){
     if ( !fin ) {
       cerr << endl << "ERROR: " << endl << endl;
       cerr << "The system call: \"" << call << "\" did not produce the file: \""<<skf_dir<<"/rep.out\""
-           << endl << "calculation of gasrepfit was failed."
+           << endl << "calculation of repopt was failed."
            << endl << "exit erepobj" << endl << endl;
       exit(1);
     }

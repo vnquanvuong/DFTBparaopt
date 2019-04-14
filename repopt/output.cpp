@@ -10,7 +10,7 @@ extern Allequations allequations;
 extern double gtol;
 extern double expandR,deltar;
 extern double ga_pmut,ga_pcross,gauss_dev;
-extern int    ilmsfit,idecompose,nreplicate;
+extern int    ilmsfit,idecompose,nreplicate,dftbout_new;
 extern int    ga_popsize,ga_ngen,ga_scoref,ga_flushf;
 extern int    score_type,preserved_num,destroy_num,popsizemin,seed;
 extern bool   ga,read_spline,fsmooth_spline,aa_spline;

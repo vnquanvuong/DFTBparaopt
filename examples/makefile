@@ -1,2 +1,2 @@
 clean: 
-	rm -rf score.dat pop.* *.out* dftb.tmp/
+	rm -rf score.dat pop.* *.out dftb.tmp/

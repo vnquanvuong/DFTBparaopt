@@ -12,7 +12,7 @@ using namespace std;
 using namespace Eigen;
 
 extern bool runtest;
-extern int ilmsfit,idecompose,nreplicate;
+extern int ilmsfit,idecompose,nreplicate,dftbout_new;
 
 Allequations::Allequations(){}
 

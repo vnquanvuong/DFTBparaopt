@@ -26,7 +26,6 @@ void Erepobj::readinp(const string inputfile){
   ngrid=100;
   dgrid=0.1;
   omega=0.3;
-  onsiten=onsitep=false;
   score_type=2;
   fit_type=0;
   outfilename="erepopt.log";
@@ -53,31 +52,79 @@ void Erepobj::readinp(const string inputfile){
           if(sscanf(cline,"%s",ctemp)<0) continue;
           if(ctemp[0]=='#' ) continue;
           sscanf(cline,"%s",ctemp1);
-          if(stemp.find("dftbversion")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); dftbversion=ctemp2;}
-          if(stemp.find("scratchfolder")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2);  scratch=ctemp2;}
-          if(stemp.find("popfinalfile")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2);  popfinalfile=ctemp2;}
-          if(stemp.find("popinitialfile")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); popinitialfile=ctemp2;}
-          if(stemp.find("skgen")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); skgen=ctemp2;}
-          if(stemp.find("onecent")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); onecent=ctemp2;}
-          if(stemp.find("twocent")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); twocent=ctemp2;}
-          if(stemp.find("outfile")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); outfilename=ctemp2;}
-          if(stemp.find("libdir")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); libdir=ctemp2;}
-          if(stemp.find("libadddir")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); libadddir=ctemp2;addskf=true;}
-          if(stemp.find("repadddir")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); repadddir=ctemp2;addrep=true;}
-          if(stemp.find("omega")!=string::npos){ sscanf(cline,"%s %le",ctemp1,&omega); lc=true;}
-          if(stemp.find("dgrid")!=string::npos){ sscanf(cline,"%s %le",ctemp1,&dgrid);}
-          if(stemp.find("ngrid")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&ngrid);}
-          if(stemp.find("power")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&power);}
-          if(stemp.find("nthreads")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&cpu_number);}
-          if(stemp.find("grids")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); fgrid=ctemp2;}
-          if(stemp.find("dftb_inp")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); fdftb_inp=ctemp2;}
-          if(stemp.find("rep.in")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); frep_in=ctemp2;}
-          if(stemp.find("gasrepfit")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); gasrepfit=ctemp2;}
-          if(stemp.find("onsiten")!=string::npos){ sscanf(cline,"%s %le",ctemp1,&esn); onsiten=true;}
-          if(stemp.find("onsitep")!=string::npos){ sscanf(cline,"%s %le",ctemp1,&esp); onsitep=true;}
-          if(stemp.find("skfclean")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); skfclean= itmp;}
+          if(stemp.find("nthreads ")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&cpu_number);}
+          if(stemp.find("scratchfolder ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2);  scratch=ctemp2;}
+          if(stemp.find("dftbversion ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); dftbversion=ctemp2;}
+          if(stemp.find("skgen ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); skgen=ctemp2;}
+          if(stemp.find("onecent ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); onecent=ctemp2;}
+          if(stemp.find("twocent ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); twocent=ctemp2;}
+          if(stemp.find("skdefversion ")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&skdefversion);}
+          if(stemp.find("xcfunctional ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); xcfunctional=ctemp2;}
+          if(stemp.find("omega ")!=string::npos){ sscanf(cline,"%s %le",ctemp1,&omega); lc=true;}
+          if(stemp.find("superposition ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); superposition=ctemp2;}
+          if(stemp.find("dgrid ")!=string::npos){ sscanf(cline,"%s %le",ctemp1,&dgrid);}
+          if(stemp.find("ngrid ")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&ngrid);}
+          if(stemp.find("power ")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&power);}
+          if(stemp.find("libdir ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); libdir=ctemp2;}
+          if(stemp.find("libadddir ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); libadddir=ctemp2;addskf=true;}
+          if(stemp.find("repadddir ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); repadddir=ctemp2;addrep=true;}
+          if(stemp.find("skfclean ")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); skfclean= itmp;}
+          if(stemp.find("repopt ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); repopt=ctemp2;}
+          if(stemp.find("rep.in ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); frep_in=ctemp2;}
+          if(stemp.find("grids ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); fgrid=ctemp2;}
+          if(stemp.find("outfile ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); outfilename=ctemp2;}
+          if(stemp.find("popfinalfile ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2);  popfinalfile=ctemp2;}
+          if(stemp.find("popinitialfile ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); popinitialfile=ctemp2;}
         }
-      }else if(stemp.find("addHamiltonian:")!=string::npos){
+      }else if(stemp.find("$atomparameters:")!=string::npos){
+        ntmp=0;
+        while(infile.getline(cline,512)){
+          remove_comment(cline);
+          stemp=cline;
+          if(stemp.find("$end")!=string::npos) break;
+          if(sscanf(cline,"%s",ctemp)<0) continue;
+          if(ctemp[0]=='#' ) continue;
+          atomparameters.resize(ntmp+1);
+          atomparameters[ntmp].name=ctemp;
+          while(infile.getline(cline,512)){
+            remove_comment(cline);
+            stemp=cline;
+            if(stemp.find("$subend")!=string::npos) break;
+            if(sscanf(cline,"%s",ctemp)<0) continue;
+            if(ctemp[0]=='#' ) continue;
+            if(stemp.find("PowerCompression")!=string::npos){
+              sscanf(cline,"%s %s %d",ctemp1,ctemp1,&itmp); 
+              atomparameters[ntmp].power=itmp;
+              continue;
+            }
+            if(stemp.find("ShellResolved")!=string::npos){
+              sscanf(cline,"%s %s %s",ctemp1,ctemp1,ctemp2);
+              atomparameters[ntmp].shellresolved=ctemp2;
+              continue;
+            }
+            atomparameters[ntmp].atomconfig.push_back(stemp);
+          }
+          ntmp++;
+        }
+      }else if(stemp.find("$onecenterparameters:")!=string::npos){
+        while(infile.getline(cline,512)){
+          remove_comment(cline);
+          stemp=cline;
+          if(stemp.find("$end")!=string::npos) break;
+          if(sscanf(cline,"%s",ctemp)<0) continue;
+          if(ctemp[0]=='#' ) continue;
+          onecenterparameters.push_back(stemp);
+        }
+      }else if(stemp.find("$twocenterparameters:")!=string::npos){
+        while(infile.getline(cline,512)){
+          remove_comment(cline);
+          stemp=cline;
+          if(stemp.find("$end")!=string::npos) break;
+          if(sscanf(cline,"%s",ctemp)<0) continue;
+          if(ctemp[0]=='#' ) continue;
+          twocenterparameters.push_back(stemp);
+        }
+      }else if(stemp.find("$addhamiltonian:")!=string::npos){
         while(infile.getline(cline,512)){
           remove_comment(cline);
           stemp=cline;
@@ -93,21 +140,21 @@ void Erepobj::readinp(const string inputfile){
           if(stemp.find("$end")!=string::npos) break;
           if(sscanf(cline,"%s",ctemp)<0) continue;
           if(ctemp[0]=='#' ) continue;
-          if(stemp.find("popsize")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_popsize);
-          if(stemp.find("ngen")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_ngen);
-          if(stemp.find("preserved_num")!=string::npos) sscanf(cline,"%s %d",ctemp1,&preserved_num);
-          if(stemp.find("scoref")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_scoref);
-          if(stemp.find("flushf")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_flushf);
-          if(stemp.find("score_type")!=string::npos) sscanf(cline,"%s %d",ctemp1,&score_type);
-          if(stemp.find("fit_type")!=string::npos) sscanf(cline,"%s %d",ctemp1,&fit_type);
-          if(stemp.find("seed")!=string::npos) sscanf(cline,"%s %d",ctemp1,&seed);
-          if(stemp.find("pmut")!=string::npos) sscanf(cline,"%s %le",ctemp1,&ga_pmut);
-          if(stemp.find("pcross")!=string::npos) sscanf(cline,"%s %le",ctemp1,&ga_pcross);
-          if(stemp.find("tol")!=string::npos) sscanf(cline,"%s %le",ctemp1,&gtol);
-          if(stemp.find("ga")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); ga = itmp;}
-          if(stemp.find("runtest")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); runtest = itmp;}
-          if(stemp.find("readr")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); readr= itmp;}
-          if(stemp.find("restart")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); restart= itmp;}
+          if(stemp.find("popsize ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_popsize);
+          if(stemp.find("ngen ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_ngen);
+          if(stemp.find("preserved_num ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&preserved_num);
+          if(stemp.find("scoref ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_scoref);
+          if(stemp.find("flushf ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_flushf);
+          if(stemp.find("score_type ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&score_type);
+          if(stemp.find("fit_type ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&fit_type);
+          if(stemp.find("seed ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&seed);
+          if(stemp.find("pmut ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&ga_pmut);
+          if(stemp.find("pcross ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&ga_pcross);
+          if(stemp.find("tol ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&gtol);
+          if(stemp.find("ga ")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); ga = itmp;}
+          if(stemp.find("runtest ")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); runtest = itmp;}
+          if(stemp.find("readr ")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); readr= itmp;}
+          if(stemp.find("restart ")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); restart= itmp;}
         }
       }else if(stemp.find("$atomic_energy:")!=string::npos){
         ntmp=0;

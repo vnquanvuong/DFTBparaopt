@@ -1,5 +1,6 @@
 $system:
   dftb_version    dftb+
+  dftbout_new     1
   idecompose      6
   ilmsfit         4
   nreplicate      1
@@ -10,32 +11,42 @@ $genetic_algorithm:
   runtest         0
   score_type      2 
   read_spline     1
-  popsizemax      1
-  preserved_num   0
-  destroy_num     0
+  popsizemax      100
+  preserved_num   10
+  destroy_num     1
   popsizemin      1
-  ngen            0
+  ngen            100
   pmut            0.05
   pcross          0.90
   grid_update     0
+  seed            111
 $end
 
 $element_types:# atom type, eatom
 $end
 
-
 $potentials:# potentials to optimize, delta extent r, file of knot-vector, order of spline, constrain level, attractive  allow 
-  h_h_    0.3    grids/hh.grdx     0.05      4    2   1 
-  c_h_    0.3    grids/ch.grdx     0.05      4    2   1 
-  c_c_    0.3    grids/cc.grdx     0.05      4    2   1  
+  h_h_    0.3    grids/hh.grdx     0.15      4    2   1 
+  c_h_    0.3    grids/ch.grdx     0.15      4    2   1 
+  c_c_    0.3    grids/cc.grdx     0.15      4    2   1  
 $end
 
 $compounds:# geometries, Ediss(kcal/mol), eweight, fweight, dftbinp, forceinput
   geom/h2.xyz                           109.94     1    1  dftb_inp/dftb2_c0.hsd   0 
   geom/ch4.xyz                          420.16     1    1  dftb_inp/dftb2_c0.hsd   0 
-  geom/h3cch3.xyz                       712.04     1    1  dftb_inp/dftb2_c0.hsd   0 
-  geom/c6h6.xyz                        1367.45     1    1  dftb_inp/dftb2_c0.hsd   0 
-  geom/h2cch2.xyz                       563.57     1    1  dftb_inp/dftb2_c0.hsd   0 
   geom/hcch.xyz                         405.14     1    1  dftb_inp/dftb2_c0.hsd   0 
-$end
+  geom/h3cch3.xyz                       712.04     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/h2cch2.xyz                       563.57     1    1  dftb_inp/dftb2_c0.hsd   0 
+  geom/c6h6.xyz                        1367.45     1    1  dftb_inp/dftb2_c0.hsd   0 
 
+  geom/bchange/ch4_hc_1,2_d-0.3.xyz            0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/ch4_hc_1,2_d-0.3.frc          0  
+  geom/bchange/hcch_min_cc_1,2_d-0.3.xyz       0   0  0.1  dftb_inp/dftb2_c0.hsd   geom/bchange/hcch_min_cc_1,2_d-0.3.frc     0  
+
+  geom/bchange/h2_hh_1,2_d-0.2.xyz             0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2_hh_1,2_d-0.2.frc           0  
+  geom/bchange/ch4_hc_1,2_d-0.2.xyz            0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/ch4_hc_1,2_d-0.2.frc          0  
+  geom/bchange/hcch_min_cc_1,2_d-0.2.xyz       0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/hcch_min_cc_1,2_d-0.2.frc     0  
+
+  geom/bchange/h2_hh_1,2_d-0.1.xyz             0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/h2_hh_1,2_d-0.1.frc           0  
+  geom/bchange/ch4_hc_1,2_d-0.1.xyz            0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/ch4_hc_1,2_d-0.1.frc          0  
+  geom/bchange/hcch_min_cc_1,2_d-0.1.xyz       0   0    1  dftb_inp/dftb2_c0.hsd   geom/bchange/hcch_min_cc_1,2_d-0.1.frc     0  
+$end

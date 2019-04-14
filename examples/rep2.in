@@ -1,5 +1,6 @@
 $system:
   dftb_version    dftb+
+  dftbout_new     1
   idecompose      6
   ilmsfit         4
   nreplicate      1
@@ -18,6 +19,7 @@ $genetic_algorithm:
   pmut            0.03
   pcross          0.90
   grid_update     0
+  seed            111
 $end
 
 $element_types:# atom type, eatom
@@ -25,16 +27,16 @@ $end
 
 
 $potentials:# potentials to optimize, delta extent r, file of knot-vector, order of spline, constrain level, attractive allow 
-  h_h_    0.3    grids/hh.grdx     0.05      4    2   1 
-  c_h_    0.3    grids/ch.grdx     0.05      4    2   1 
-  c_c_    0.3    grids/cc.grdx     0.05      4    2   1  
-  h_n_    0.3    grids/hn.grdx     0.05      4    2   1
-  h_o_    0.3    grids/ho.grdx     0.05      4    2   1
-  c_n_    0.3    grids/cn.grdx     0.05      4    2   1
-  n_n_    0.3    grids/nn.grdx     0.05      4    2   1
-  c_o_    0.3    grids/co.grdx     0.05      4    2   1
-  n_o_    0.3    grids/no.grdx     0.05      4    2   1
-  o_o_    0.3    grids/oo.grdx     0.05      4    2   1
+  h_h_    0.3    grids/hh.grdx     0.15      4    2   1 
+  c_h_    0.3    grids/ch.grdx     0.15      4    2   1 
+  c_c_    0.3    grids/cc.grdx     0.15      4    2   1  
+  h_n_    0.3    grids/hn.grdx     0.15      4    2   1
+  h_o_    0.3    grids/ho.grdx     0.15      4    2   1
+  c_n_    0.3    grids/cn.grdx     0.15      4    2   1
+  n_n_    0.3    grids/nn.grdx     0.15      4    2   1
+  c_o_    0.3    grids/co.grdx     0.15      4    2   1
+  n_o_    0.3    grids/no.grdx     0.15      4    2   1
+  o_o_    0.3    grids/oo.grdx     0.15      4    2   1
 $end
 
 $compounds:# geometries, Ediss(kcal/mol), eweight, fweight, dftbinp, forceinput

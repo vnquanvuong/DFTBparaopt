@@ -23,7 +23,7 @@ bool   runtest=false,endgen=false,grid_update=true;
 int    ga_popsize=3000,ga_ngen=1000,ga_scoref=1,ga_flushf=1;
 int    score_type=2,preserved_num=300,destroy_num=30,popsizemin=2,seed=0;
 double ga_pmut=0.2,ga_pcross=0.9,gauss_dev=0.025,gtol=0.000001,deltar=0.0001; 
-int    ilmsfit=4,idecompose=6,nreplicate=1;
+int    ilmsfit=4,idecompose=6,nreplicate=1,dftbout_new=0;
 
 sddh         ddh;
 vector<spot> svpot; 

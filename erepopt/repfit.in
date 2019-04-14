@@ -1,0 +1,107 @@
+$system:
+  nthreads        1
+  dftbversion     /home/qv0/Apps/dftbplus_v2quan89/_install/bin/dftb+
+  repopt          /home/qv0/Apps/DFTBparaopt/repopt/repopt
+  onecent         /home/qv0/Apps/esktools_lc/hfatom_spin
+  twocent         /home/qv0/Apps/esktools_lc/sktwocnt_lr
+  skgen           /home/qv0/Apps/esktools_lc/sktools/bin/skgen
+  skdefversion    1
+  xcfunctional    pbe
+  omega           0.4
+  superposition   density
+  power           2
+  dgrid           0.02
+  ngrid           700
+  grids           /lustre/or-hydra/cades-cnms/qv0/workspace/para_lcdftb3_hcno_work/optimization/ob3_w0.4/grids
+  rep.in          /lustre/or-hydra/cades-cnms/qv0/workspace/para_lcdftb3_hcno_work/optimization/ob3_w0.4/rep.in
+  libdir          /lustre/or-hydra/cades-cnms/qv0/workspace/para_lcdftb3_hcno_work/optimization/ob3_w0.4/libskf
+  scratchfolder   /dev/shm
+  skfclean        0
+  outfile         /lustre/or-hydra/cades-cnms/qv0/workspace/para_lcdftb3_hcno_work/optimization/ob3_w0.4/run/gaserepfit.log
+  popinitialfile  /lustre/or-hydra/cades-cnms/qv0/workspace/para_lcdftb3_hcno_work/optimization/ob3_w0.4/run/pop.initial.dat
+  popfinalfile    /lustre/or-hydra/cades-cnms/qv0/workspace/para_lcdftb3_hcno_work/optimization/ob3_w0.4/run/pop.final.dat
+$end
+
+$addhamiltonian:
+$end
+
+$genetic_algorithm:
+  ga              1
+  popsize         32
+  ngen            0
+  pmut            0.05
+  pcross          0.9
+  fit_type        0
+  preserved_num   3
+  score_type      1
+  seed            0
+  runtest         0
+  readr           1
+  restart         0
+$end
+
+$atomic_energy:
+$end
+
+$compounds:#  str, charge, start, end, gauss, datfile, weight
+$end
+
+$element_types:
+H   11  0      2.9  2.9  2.9  1      2.9  2.9  2.9  1
+O  111  1      2.7  2.7  2.7  1      2.7  2.7  2.7  1      2.7  2.7  2.7  1
+N  111  1      3.2  3.2  3.2  1      3.2  3.2  3.2  1      3.2  3.2  3.2  1
+C  111  1      3.7  3.7  3.7  1      3.7  3.7  3.7  1      3.7  3.7  3.7  1
+$end
+
+$vorbes:# name, type, min, guess, max, precision  # -0.7979447829645
+N 2S -0.821 -0.821 -0.821 3
+$end                                              
+
+# 2.9	  2.9	  2.7	  2.7	  2.7	  3.3	  3.2	  3.2	  3.8	  3.7	  3.7	 1.00	  1.4	 0.48	  4.7	-0.821	         0.002811915
+
+$atomparameters:
+  H
+    AtomConfig {
+      AtomicNumber = 1
+      Mass = 1.008
+      Occupations {
+	      1S = 1.0 0.0
+      }
+      ValenceShells = 1s
+      Relativistics = None
+    }
+    ShellResolved  = No
+    PowerCompression = 2
+  $subend
+$end                                              
+
+$onecenterparameters:
+  $StandardDeltaFilling {
+    DeltaFilling = 0.01
+  }
+  H {
+    $StandardDeltaFilling
+    Calculator = SlaterAtom {
+      Exponents {
+      	S = 0.50 1.0 2.0
+      }
+      MaxPowers {
+      	S = 3
+      }
+    }
+  }
+$end                                              
+
+$twocenterparameters: 
+  $EqGridCutoff10 = EquidistantGrid {
+    GridStart = 0.4
+      GridSeparation = 0.02
+      Tolerance = 5e-5
+      MaxDistance = -10.001
+  }
+  $SkTwocnt_low = Sktwocnt { 
+    IntegrationPoints = 400 200
+  }
+  H-H { Grid = $EqGridCutoff10; Calculator = $SkTwocnt_low }
+$end                                              
+

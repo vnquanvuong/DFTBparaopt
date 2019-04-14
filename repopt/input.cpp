@@ -9,7 +9,7 @@ using namespace std;
 extern double gtol;
 extern double expandR,deltar;
 extern double ga_pmut,ga_pcross,gauss_dev;
-extern int    ilmsfit,idecompose,nreplicate;
+extern int    ilmsfit,idecompose,nreplicate,dftbout_new;
 extern int    ga_popsize,ga_ngen,ga_scoref,ga_flushf;
 extern int    score_type,preserved_num,destroy_num,popsizemin,seed;
 extern bool   ga,read_spline,fsmooth_spline,aa_spline;
@@ -46,10 +46,11 @@ void Allequations::readinp(const string inputfile){
           if(stemp.find("$end")!=string::npos) break;
           if(sscanf(cline,"%s",ctemp)<0) continue;
           if(ctemp[0]=='#' ) continue;
-          if(stemp.find("dftb_version")!=string::npos) sscanf(cline,"%s %s",ctemp1,ctemp2); dftbversion=ctemp2;
-          if(stemp.find("ilmsfit")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ilmsfit);
-          if(stemp.find("idecompose")!=string::npos) sscanf(cline,"%s %d",ctemp1,&idecompose);
-          if(stemp.find("nreplicate")!=string::npos) sscanf(cline,"%s %d",ctemp1,&nreplicate);
+          if(stemp.find("dftb_version ")!=string::npos) sscanf(cline,"%s %s",ctemp1,ctemp2); dftbversion=ctemp2;
+          if(stemp.find("dftbout_new ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&dftbout_new);
+          if(stemp.find("ilmsfit ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ilmsfit);
+          if(stemp.find("idecompose ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&idecompose);
+          if(stemp.find("nreplicate ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&nreplicate);
         }
       }else if(stemp.find("$genetic_algorithm:")!=string::npos){
         while(infile.getline(cline,512)){
@@ -58,24 +59,24 @@ void Allequations::readinp(const string inputfile){
           if(stemp.find("$end")!=string::npos) break;
           if(sscanf(cline,"%s",ctemp)<0) continue;
           if(ctemp[0]=='#' ) continue;
-          if(stemp.find("popsizemax")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_popsize);
-          if(stemp.find("ngen")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_ngen);
-          if(stemp.find("preserved_num")!=string::npos) sscanf(cline,"%s %d",ctemp1,&preserved_num);
-          if(stemp.find("destroy_num")!=string::npos) sscanf(cline,"%s %d",ctemp1,&destroy_num);
-          if(stemp.find("popsizemin")!=string::npos) sscanf(cline,"%s %d",ctemp1,&popsizemin);
-          if(stemp.find("scoref")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_scoref);
-          if(stemp.find("flushf")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_flushf);
-          if(stemp.find("score_type")!=string::npos) sscanf(cline,"%s %d",ctemp1,&score_type);
-          if(stemp.find("seed")!=string::npos) sscanf(cline,"%s %d",ctemp1,&seed);
-          if(stemp.find("pmut")!=string::npos) sscanf(cline,"%s %le",ctemp1,&ga_pmut);
-          if(stemp.find("pcross")!=string::npos) sscanf(cline,"%s %le",ctemp1,&ga_pcross);
-          if(stemp.find("dev")!=string::npos) sscanf(cline,"%s %le",ctemp1,&gauss_dev);
-          if(stemp.find("tol")!=string::npos) sscanf(cline,"%s %le",ctemp1,&gtol);
-          if(stemp.find("deltar")!=string::npos) sscanf(cline,"%s %le",ctemp1,&deltar);
-          if(stemp.find("ga")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); ga = itmp;}
-          if(stemp.find("runtest")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); runtest = itmp;}
-          if(stemp.find("read_spline")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); read_spline = itmp;}
-          if(stemp.find("grid_update")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); grid_update = itmp;}
+          if(stemp.find("popsizemax ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_popsize);
+          if(stemp.find("ngen ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_ngen);
+          if(stemp.find("preserved_num ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&preserved_num);
+          if(stemp.find("destroy_num ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&destroy_num);
+          if(stemp.find("popsizemin ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&popsizemin);
+          if(stemp.find("scoref ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_scoref);
+          if(stemp.find("flushf ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ga_flushf);
+          if(stemp.find("score_type ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&score_type);
+          if(stemp.find("seed ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&seed);
+          if(stemp.find("pmut ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&ga_pmut);
+          if(stemp.find("pcross ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&ga_pcross);
+          if(stemp.find("dev ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&gauss_dev);
+          if(stemp.find("tol ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&gtol);
+          if(stemp.find("deltar ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&deltar);
+          if(stemp.find("ga ")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); ga = itmp;}
+          if(stemp.find("runtest ")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); runtest = itmp;}
+          if(stemp.find("read_spline ")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); read_spline = itmp;}
+          if(stemp.find("grid_update ")!=string::npos){ sscanf(cline,"%s %d",ctemp1,&itmp); grid_update = itmp;}
         }
       }else if(stemp.find("$element_types:")!=string::npos){
         while(infile.getline(cline,512)){

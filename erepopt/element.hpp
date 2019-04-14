@@ -21,6 +21,13 @@ public:
   vector<Radius> radius; 
 };
 
+class Atomparameters {
+public:
+  int power;
+  string name,shellresolved;
+  vector<string> atomconfig; 
+};
+
 #endif /* ELEMENT_HPP */
 
 

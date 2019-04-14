@@ -1,7 +1,6 @@
 Geometry = GenFormat {
   <<< "in.gen"
 }
-
 Hamiltonian = DFTB {
   Eigensolver = RelativelyRobust{}
   Charge = -1
@@ -21,9 +20,10 @@ Hamiltonian = DFTB {
   }
 }
 ParserOptions {
+  ParserVersion = 6
   IgnoreUnprocessedNodes = Yes
 }
-Options {
+Analysis {
   CalculateForces = Yes
 }
 
