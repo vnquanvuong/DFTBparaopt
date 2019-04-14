@@ -79,6 +79,7 @@ void Erepobj::writeskgen(const string& tmp_dir, const GAGenome& g) {
   string stemp = tmp_dir+"/"+"skdef.hsd";
   ofstream fout(stemp.c_str());
   bool hp,cp,np,op;
+  bool pass; 
   hp=cp=np=op=false;
 
   idx0=0; 
@@ -140,11 +141,16 @@ void Erepobj::writeskgen(const string& tmp_dir, const GAGenome& g) {
     $OccupationsHg\n\
     6P = 3.0 3.0\n\
   }\n\n";
-  
+ 
   idx=0;
   for(i=0; i<velem.size();i++){
+    pass=false;
     for(j=0; j<atomparameters.size();j++){
-      if(velem[i].name==atomparameters[j].name) break;
+      if(velem[i].name==atomparameters[j].name){pass=true; break;}
+    }
+    if(!pass){
+      cerr <<"\nERROR:\nCan not find atomparameters for " << velem[i].name << endl ;
+      exit(1);
     }
     fout<<"  "<<atomparameters[j].name<<" {\n";
     for(k=0; k<atomparameters[j].atomconfig.size();k++){
@@ -471,8 +477,3 @@ void Erepobj::makeskf(const GAGenome& g) {
 
 } 
 
-
-          //IntegrationPoints = 200 50\n\
-          //IntegrationPoints = 300 150\n\
-            
-            
