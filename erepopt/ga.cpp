@@ -76,6 +76,9 @@ void MyGASimpleGA::initialstep(){
 ///////////////////////////////////////////////////////////// 
   for(impi=start; impi< end; impi++){
     erepobj.makeskf(pop->individual(impi));
+  }
+  MPI_Barrier(MPI_COMM_WORLD);
+  for(impi=start; impi< end; impi++){
     pop->individual(impi).evaluate(gaTrue);
   }
 ///////////////////////////////////////////////////////////// 
@@ -222,6 +225,9 @@ if(rank==0){
 ///////////////////////////////////////////////////////////// 
   for(impi=start; impi< end; impi++){
     erepobj.makeskf(pop->individual(impi));
+  }
+  MPI_Barrier(MPI_COMM_WORLD);
+  for(impi=start; impi< end; impi++){
     pop->individual(impi).evaluate(gaTrue);
   }
 ///////////////////////////////////////////////////////////// 
