@@ -28,8 +28,12 @@ extern int cpu_number;
 extern int preserved_num;
 extern Erepobj erepobj;
 extern sddh ddh;
+extern int idrefr;
+extern double s1,s2,s3,s4,s5,s6,s7,s8,s9,sdenswf;
 void MyGASimpleGA::initialstep(){
   int i,j,k,length,idx,impi, start, end, size, rank,irank;
+  int ie1,ie2,nvars;
+  double value,tmpsref,tmps,tmpp;
   double buffer;
   double * abuffer;
   length=0;
@@ -54,6 +58,166 @@ void MyGASimpleGA::initialstep(){
   }else{
     end = start + (pop->size()/size);
   }
+
+if(rank==0){
+  for(k=0; k<pop->size(); k++){
+    GA1DArrayGenome<double>& genome = (GA1DArrayGenome<double>&)pop->individual(k);
+    idx=0;
+    for(i=0;i<erepobj.velem.size();i++){ 
+      nvars=erepobj.velem[i].lmax+2;
+      for(j=0; j<nvars; j++){
+        value  = genome.gene(idx);
+        value  = GAMax(erepobj.velem[i].radius[j].minr, value);
+        value  = GAMin(erepobj.velem[i].radius[j].maxr, value);
+        genome.gene(idx,value);
+        idx++;
+      }
+    }
+    if(ddh.td3){
+      for(i=0;i<ddh.d3.size();i++){ 
+        value  = genome.gene(idx);
+        value  = GAMax(ddh.d3[i].min, value);
+        value  = GAMin(ddh.d3[i].max, value);
+        genome.gene(idx,value);
+        idx++;
+      }
+    }
+    if(ddh.tdamph){
+      value  = genome.gene(idx);
+      value  = GAMax(ddh.damph.min, value);
+      value  = GAMin(ddh.damph.max, value);
+      genome.gene(idx,value);
+      idx++;
+    }
+    if(ddh.thubbardderivs){
+      for(i=0;i<ddh.hubbardderivs.size();i++){ 
+        value  = genome.gene(idx);
+        value  = GAMax(ddh.hubbardderivs[i].min, value);
+        value  = GAMin(ddh.hubbardderivs[i].max, value);
+        genome.gene(idx,value);
+        idx++;
+      }
+    }
+    if(ddh.tdamphver2){
+      for(i=0;i<ddh.damphver2.size();i++){ 
+        value  = genome.gene(idx);
+        value  = GAMax(ddh.damphver2[i].min, value);
+        value  = GAMin(ddh.damphver2[i].max, value);
+        genome.gene(idx,value);
+        idx++;
+      }
+    }
+    if(ddh.thubbards){
+      for(i=0;i<ddh.hubbards.size();i++){ 
+        value  = genome.gene(idx);
+        value  = GAMax(ddh.hubbards[i].min, value);
+        value  = GAMin(ddh.hubbards[i].max, value);
+        genome.gene(idx,value);
+        idx++;
+      }
+    }
+    if(ddh.tvorbes){
+      for(i=0;i<ddh.vorbes.size();i++){ 
+        value  = genome.gene(idx);
+        value  = GAMax(ddh.vorbes[i].min, value);
+        value  = GAMin(ddh.vorbes[i].max, value);
+        genome.gene(idx,value);
+        idx++;
+      }
+    }
+
+    ie1=-1;
+    for(i=0;i<erepobj.velem.size();i++){
+      ie1=ie1+2;  
+      tmpsref=genome.gene(idrefr);
+      tmps=genome.gene(ie1);
+      tmpp=genome.gene(ie1+1);
+      if(erepobj.velem[i].optype==2){
+        genome.gene(ie1+1,tmps);
+      }else if(erepobj.velem[i].optype==3){
+        genome.gene(ie1+1,tmps);
+        genome.gene(ie1+2,tmps);
+      }else if(erepobj.velem[i].optype==12){
+        genome.gene(ie1,GAMin(tmps, tmpp));
+        genome.gene(ie1+1,GAMax(tmps, tmpp));
+      }else if(erepobj.velem[i].optype==14){
+        genome.gene(ie1,GAMin(tmps, tmpp));
+        genome.gene(ie1+1,GAMax(tmps, tmpp));
+        if(genome.gene(ie1+1)-genome.gene(ie1)<0.4) genome.gene(ie1,genome.gene(ie1+1)-0.4); 
+      }else if(erepobj.velem[i].optype==21){
+        genome.gene(ie1,GAMax(tmps, tmpp));
+        genome.gene(ie1+1,GAMin(tmps, tmpp));
+      }else if(erepobj.velem[i].optype==11){
+        genome.gene(ie1-1,tmps);
+      }else if(erepobj.velem[i].optype==115){
+        tmps=double(int(tmps*10.0))/10.0;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==1151){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s1*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==1152){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s2*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==1153){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s3*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==1154){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s4*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==111){
+        genome.gene(ie1-1,tmps);
+        genome.gene(ie1+1,tmps);
+      }else if(erepobj.velem[i].optype==1115){
+        tmps=double(int(tmps*10.0))/10.0;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1+1,tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==11151){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s1*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1+1,tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==11152){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s2*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1+1,tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==11153){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s3*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1+1,tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==11154){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s4*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1+1,tmps);
+        genome.gene(ie1,tmps);
+      }
+      ie1=ie1+erepobj.velem[i].lmax; 
+    }
+  }
+}
 ///////////////////////////////////////////////////////////// 
   MPI_Barrier(MPI_COMM_WORLD);
   for(i=0; i<pop->size(); i++){
@@ -117,6 +281,8 @@ void MyGASimpleGA::step() {
  // cout<<"step -1\n";
   int mut, c1, c2;
   int i,j,k,length,idx,impi, start, end, size, rank,irank;
+  int ie1,ie2,nvars;
+  double value,tmpsref,tmps,tmpp;
   double buffer;
   double * abuffer;
   length=0;
@@ -194,6 +360,164 @@ if(rank==0){
  // cout<<"step 2\n";
 
   stats.numrep += pop->size();
+
+  for(k=0; k<pop->size(); k++){
+    GA1DArrayGenome<double>& genome = (GA1DArrayGenome<double>&)pop->individual(k);
+    idx=0;
+    for(i=0;i<erepobj.velem.size();i++){ 
+      nvars=erepobj.velem[i].lmax+2;
+      for(j=0; j<nvars; j++){
+        value  = genome.gene(idx);
+        value  = GAMax(erepobj.velem[i].radius[j].minr, value);
+        value  = GAMin(erepobj.velem[i].radius[j].maxr, value);
+        genome.gene(idx,value);
+        idx++;
+      }
+    }
+    if(ddh.td3){
+      for(i=0;i<ddh.d3.size();i++){ 
+        value  = genome.gene(idx);
+        value  = GAMax(ddh.d3[i].min, value);
+        value  = GAMin(ddh.d3[i].max, value);
+        genome.gene(idx,value);
+        idx++;
+      }
+    }
+    if(ddh.tdamph){
+      value  = genome.gene(idx);
+      value  = GAMax(ddh.damph.min, value);
+      value  = GAMin(ddh.damph.max, value);
+      genome.gene(idx,value);
+      idx++;
+    }
+    if(ddh.thubbardderivs){
+      for(i=0;i<ddh.hubbardderivs.size();i++){ 
+        value  = genome.gene(idx);
+        value  = GAMax(ddh.hubbardderivs[i].min, value);
+        value  = GAMin(ddh.hubbardderivs[i].max, value);
+        genome.gene(idx,value);
+        idx++;
+      }
+    }
+    if(ddh.tdamphver2){
+      for(i=0;i<ddh.damphver2.size();i++){ 
+        value  = genome.gene(idx);
+        value  = GAMax(ddh.damphver2[i].min, value);
+        value  = GAMin(ddh.damphver2[i].max, value);
+        genome.gene(idx,value);
+        idx++;
+      }
+    }
+    if(ddh.thubbards){
+      for(i=0;i<ddh.hubbards.size();i++){ 
+        value  = genome.gene(idx);
+        value  = GAMax(ddh.hubbards[i].min, value);
+        value  = GAMin(ddh.hubbards[i].max, value);
+        genome.gene(idx,value);
+        idx++;
+      }
+    }
+    if(ddh.tvorbes){
+      for(i=0;i<ddh.vorbes.size();i++){ 
+        value  = genome.gene(idx);
+        value  = GAMax(ddh.vorbes[i].min, value);
+        value  = GAMin(ddh.vorbes[i].max, value);
+        genome.gene(idx,value);
+        idx++;
+      }
+    }
+
+    ie1=-1;
+    for(i=0;i<erepobj.velem.size();i++){
+      ie1=ie1+2;  
+      tmpsref=genome.gene(idrefr);
+      tmps=genome.gene(ie1);
+      tmpp=genome.gene(ie1+1);
+      if(erepobj.velem[i].optype==2){
+        genome.gene(ie1+1,tmps);
+      }else if(erepobj.velem[i].optype==3){
+        genome.gene(ie1+1,tmps);
+        genome.gene(ie1+2,tmps);
+      }else if(erepobj.velem[i].optype==12){
+        genome.gene(ie1,GAMin(tmps, tmpp));
+        genome.gene(ie1+1,GAMax(tmps, tmpp));
+      }else if(erepobj.velem[i].optype==14){
+        genome.gene(ie1,GAMin(tmps, tmpp));
+        genome.gene(ie1+1,GAMax(tmps, tmpp));
+        if(genome.gene(ie1+1)-genome.gene(ie1)<0.4) genome.gene(ie1,genome.gene(ie1+1)-0.4); 
+      }else if(erepobj.velem[i].optype==21){
+        genome.gene(ie1,GAMax(tmps, tmpp));
+        genome.gene(ie1+1,GAMin(tmps, tmpp));
+      }else if(erepobj.velem[i].optype==11){
+        genome.gene(ie1-1,tmps);
+      }else if(erepobj.velem[i].optype==115){
+        tmps=double(int(tmps*10.0))/10.0;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==1151){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s1*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==1152){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s2*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==1153){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s3*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==1154){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s4*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==111){
+        genome.gene(ie1-1,tmps);
+        genome.gene(ie1+1,tmps);
+      }else if(erepobj.velem[i].optype==1115){
+        tmps=double(int(tmps*10.0))/10.0;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1+1,tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==11151){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s1*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1+1,tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==11152){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s2*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1+1,tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==11153){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s3*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1+1,tmps);
+        genome.gene(ie1,tmps);
+      }else if(erepobj.velem[i].optype==11154){
+        tmpsref=double(int(tmpsref*10.0))/10.0;
+        genome.gene(idrefr,tmpsref);
+        tmps=s4*tmpsref;
+        genome.gene(ie1-1,s5*tmps);
+        genome.gene(ie1+1,tmps);
+        genome.gene(ie1,tmps);
+      }
+      ie1=ie1+erepobj.velem[i].lmax; 
+    }
+  }
 }
 
   start = rank*(pop->size()/size);

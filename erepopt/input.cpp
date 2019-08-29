@@ -8,6 +8,8 @@ using namespace std;
 extern vector<string> addHamiltonian;
 extern int ga_popsize, ga_ngen, ga_scoref, ga_flushf;
 extern int preserved_num, seed;
+extern int idrefr; 
+extern double s1,s2,s3,s4,s5,s6,s7,s8,s9,sdenswf; 
 extern double gtol;
 extern double ga_pmut, ga_pcross;
 extern bool ga,readr,restart;
@@ -75,6 +77,26 @@ void Erepobj::readinp(const string inputfile){
           if(stemp.find("outfile ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); outfilename=ctemp2;}
           if(stemp.find("popfinalfile ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2);  popfinalfile=ctemp2;}
           if(stemp.find("popinitialfile ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); popinitialfile=ctemp2;}
+        }
+      }else if(stemp.find("$variables:")!=string::npos){
+        while(infile.getline(cline,512)){
+          remove_comment(cline);
+          stemp=cline;
+          if(stemp.find("$end")!=string::npos) break;
+          if(sscanf(cline,"%s",ctemp)<0) continue;
+          if(ctemp[0]=='#' ) continue;
+          sscanf(cline,"%s",ctemp1);
+          if(stemp.find("s1 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s1);
+          if(stemp.find("s2 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s2);
+          if(stemp.find("s3 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s3);
+          if(stemp.find("s4 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s4);
+          if(stemp.find("s5 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s5);
+          if(stemp.find("s6 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s6);
+          if(stemp.find("s7 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s7);
+          if(stemp.find("s8 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s8);
+          if(stemp.find("s9 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s9);
+          if(stemp.find("sdenswf ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&sdenswf);
+          if(stemp.find("idrefr ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&idrefr);
         }
       }else if(stemp.find("$atomparameters:")!=string::npos){
         ntmp=0;

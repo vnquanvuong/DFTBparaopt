@@ -9,6 +9,7 @@ using namespace std;
 extern double gtol;
 extern double expandR,deltar;
 extern double ga_pmut,ga_pcross,gauss_dev;
+extern double s1,s2,s3,s4,s5,s6,s7,s8,s9; 
 extern int    ilmsfit,idecompose,nreplicate,dftbout_new;
 extern int    ga_popsize,ga_ngen,ga_scoref,ga_flushf;
 extern int    score_type,preserved_num,destroy_num,popsizemin,seed;
@@ -51,6 +52,15 @@ void Allequations::readinp(const string inputfile){
           if(stemp.find("ilmsfit ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ilmsfit);
           if(stemp.find("idecompose ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&idecompose);
           if(stemp.find("nreplicate ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&nreplicate);
+          if(stemp.find("s1 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s1);
+          if(stemp.find("s2 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s2);
+          if(stemp.find("s3 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s3);
+          if(stemp.find("s4 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s4);
+          if(stemp.find("s5 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s5);
+          if(stemp.find("s6 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s6);
+          if(stemp.find("s7 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s7);
+          if(stemp.find("s8 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s8);
+          if(stemp.find("s9 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s9);
         }
       }else if(stemp.find("$genetic_algorithm:")!=string::npos){
         while(infile.getline(cline,512)){

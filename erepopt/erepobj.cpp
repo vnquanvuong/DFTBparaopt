@@ -112,48 +112,39 @@ void Erepobj::get_residual(const GAGenome& g) {
   double tscore,tmscore;
   int id=0,idx;
 
-//ie1=-1;
-//for(i=0;i<velem.size();i++){
-//  ie1=ie1+2;  
-//  tmp=genome.gene(ie1);
-//  if(velem[i].optype==2){
-//    genome.gene(ie1+1,tmp);
-//  }else if(velem[i].optype==3){
-//    genome.gene(ie1+1,tmp);
-//    genome.gene(ie1+2,tmp);
-//  }
-//  ie1=ie1+velem[i].lmax; 
-//}
-  
-//if (fit_type!=0){
-    ie1=-1;
-    for(i=0;i<velem.size();i++){
-      ie1=ie1+2;  
-      tmps=genome.gene(ie1);
-      tmpp=genome.gene(ie1+1);
-      if(velem[i].optype==2){
-        genome.gene(ie1+1,tmps);
-      }else if(velem[i].optype==3){
-        genome.gene(ie1+1,tmps);
-        genome.gene(ie1+2,tmps);
-      }else if(velem[i].optype==12){
-        genome.gene(ie1,GAMin(tmps, tmpp));
-        genome.gene(ie1+1,GAMax(tmps, tmpp));
-      }else if(velem[i].optype==14){
-        genome.gene(ie1,GAMin(tmps, tmpp));
-        genome.gene(ie1+1,GAMax(tmps, tmpp));
-        if(genome.gene(ie1+1)-genome.gene(ie1)<0.4) genome.gene(ie1,genome.gene(ie1+1)-0.4); 
-      }else if(velem[i].optype==21){
-        genome.gene(ie1,GAMax(tmps, tmpp));
-        genome.gene(ie1+1,GAMin(tmps, tmpp));
-      }else if(velem[i].optype==11){
-        genome.gene(ie1-1,tmps);
-      }else if(velem[i].optype==111){
-        genome.gene(ie1-1,tmps);
-        genome.gene(ie1+1,tmps);
-      }
-      ie1=ie1+velem[i].lmax; 
-    }
+    //ie1=-1;
+    //for(i=0;i<velem.size();i++){
+    //  ie1=ie1+2;  
+    //  tmps=genome.gene(ie1);
+    //  tmpp=genome.gene(ie1+1);
+    //  if(velem[i].optype==2){
+    //    genome.gene(ie1+1,tmps);
+    //  }else if(velem[i].optype==3){
+    //    genome.gene(ie1+1,tmps);
+    //    genome.gene(ie1+2,tmps);
+    //  }else if(velem[i].optype==12){
+    //    genome.gene(ie1,GAMin(tmps, tmpp));
+    //    genome.gene(ie1+1,GAMax(tmps, tmpp));
+    //  }else if(velem[i].optype==14){
+    //    genome.gene(ie1,GAMin(tmps, tmpp));
+    //    genome.gene(ie1+1,GAMax(tmps, tmpp));
+    //    if(genome.gene(ie1+1)-genome.gene(ie1)<0.4) genome.gene(ie1,genome.gene(ie1+1)-0.4); 
+    //  }else if(velem[i].optype==21){
+    //    genome.gene(ie1,GAMax(tmps, tmpp));
+    //    genome.gene(ie1+1,GAMin(tmps, tmpp));
+    //  }else if(velem[i].optype==11){
+    //    genome.gene(ie1-1,tmps);
+    //  }else if(velem[i].optype==115){
+    //    genome.gene(ie1-1,1.5*tmps);
+    //  }else if(velem[i].optype==111){
+    //    genome.gene(ie1-1,tmps);
+    //    genome.gene(ie1+1,tmps);
+    //  }else if(velem[i].optype==1115){
+    //    genome.gene(ie1-1,1.5*tmps);
+    //    genome.gene(ie1+1,tmps);
+    //  }
+    //  ie1=ie1+velem[i].lmax; 
+    //}
  
     ostringstream ss;
 //  id=omp_get_thread_num();

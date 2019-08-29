@@ -24,6 +24,8 @@ int    ga_popsize=3000,ga_ngen=1000,ga_scoref=1,ga_flushf=1;
 int    score_type=2,preserved_num=300,destroy_num=30,popsizemin=2,seed=0;
 double ga_pmut=0.2,ga_pcross=0.9,gauss_dev=0.025,gtol=0.000001,deltar=0.0001; 
 int    ilmsfit=4,idecompose=6,nreplicate=1,dftbout_new=0;
+double s1=2.0,s2=2.0,s3=2.0,s4=2.0,s5=2.0,s6=2.0,s7=2.0,s8=2.0,s9=2.0;
+double max_step01=0.22;
 
 sddh         ddh;
 vector<spot> svpot; 
@@ -40,6 +42,7 @@ int main(int argc, char** argv){
   int i,j,length,k,idx; 
   double tmp;
   Timer gtime;
+  max_step01=max_step01/AA_Bohr;
   ddh.td3=ddh.tdamph=ddh.thubbardderivs=ddh.thirdorderfull=ddh.tdamphver2=false;
   if ( argc < 2 ){
     cerr << "usage: repopt inputfile" << endl;
@@ -268,9 +271,15 @@ double MyObjective(GAGenome& g) {
     allequations.vpot[i].vr[0] = GAMin(svpot[i].minRbond, allequations.vpot[i].vr[0]);
     allequations.vpot[i].vr[0] = GAMax(svpot[i].minr, allequations.vpot[i].vr[0]);
 
+  //for(j=1;j<nknots-1;j++){ 
+  //  allequations.vpot[i].vr[j] = GAMin(svpot[i].vr[nknots-1]-svpot[i].max_step, allequations.vpot[i].vr[j]);
+  //  allequations.vpot[i].vr[j] = GAMax(allequations.vpot[i].vr[0]+max_step01, allequations.vpot[i].vr[j]);
+  //}
+
     for(j=1;j<nknots-1;j++){ 
       allequations.vpot[i].vr[j] = GAMin(svpot[i].vr[nknots-1]-svpot[i].max_step, allequations.vpot[i].vr[j]);
-      allequations.vpot[i].vr[j] = GAMax(svpot[i].minRbond+svpot[i].max_step, allequations.vpot[i].vr[j]);
+    //allequations.vpot[i].vr[j] = GAMax(svpot[i].minRbond+svpot[i].max_step, allequations.vpot[i].vr[j]);
+      allequations.vpot[i].vr[j] = GAMax(svpot[i].minRbond+max_step01, allequations.vpot[i].vr[j]);
     }
   
     for(j=1;j<nknots-1;j++){ 
@@ -283,7 +292,21 @@ double MyObjective(GAGenome& g) {
     for(j=nknots-1;j>0;j--){
       for(k=j-1;k>=0;k--){
         if(abs(allequations.vpot[i].vr[k]-allequations.vpot[i].vr[j])<svpot[i].max_step){
-          allequations.vpot[i].vr[k]-=svpot[i].max_step;
+          allequations.vpot[i].vr[k]=allequations.vpot[i].vr[j]-svpot[i].max_step;
+        }
+      }
+    }
+
+    for(j=1;j<nknots-1;j++){ 
+      allequations.vpot[i].vr[j] = GAMin(svpot[i].vr[nknots-1]-svpot[i].max_step, allequations.vpot[i].vr[j]);
+    //allequations.vpot[i].vr[j] = GAMax(svpot[i].minRbond+svpot[i].max_step, allequations.vpot[i].vr[j]);
+      allequations.vpot[i].vr[j] = GAMax(svpot[i].minRbond+max_step01, allequations.vpot[i].vr[j]);
+    }
+  
+    for(j=1;j<nknots-1;j++){ 
+      for(k=j+1;k<nknots-1;k++){
+        if(abs(allequations.vpot[i].vr[k]-allequations.vpot[i].vr[j])<svpot[i].max_step){
+          allequations.vpot[i].vr[k]=GAMin(allequations.vpot[i].vr[j]+svpot[i].max_step,svpot[i].vr[nknots-1]-svpot[i].max_step);
         }
       }
     }
@@ -301,11 +324,14 @@ double MyObjective(GAGenome& g) {
   allequations.reset();
   allequations.score();
 
-  if(score_type==0) score=allequations.restotS/(allequations.nrows-allequations.nspleq);
-  else if(score_type==1) score=allequations.restotU/(allequations.nrows-allequations.nspleq);
-  else if(score_type==2) score=pow(allequations.restot2/(allequations.nrows-allequations.nspleq),0.5);
-  else if(score_type==4) score=pow(allequations.restot4/(allequations.nrows-allequations.nspleq),0.25);
-  else if(score_type==8) score=pow(allequations.restot8/(allequations.nrows-allequations.nspleq),0.125);
+  if(score_type==0)       score=allequations.restotS/(allequations.nrows-allequations.nspleq);
+  else if(score_type==1)  score=allequations.restotU/(allequations.nrows-allequations.nspleq);
+  else if(score_type==2)  score=pow(allequations.restot2/(allequations.nrows-allequations.nspleq),0.5);
+//else if(score_type==20) score=pow((allequations.restot2+abs(allequations.reseS)+abs(allequations.resreaS))/(allequations.nrows-allequations.nspleq),0.5);
+//else if(score_type==20) score=pow(allequations.restot2/(allequations.nrows-allequations.nspleq)+abs(allequations.reseS)/allequations.neeq+abs(allequations.resreaS)/allequations.nreaeq,0.5);
+  else if(score_type==20) score=pow(allequations.restot2/(allequations.nrows-allequations.nspleq)+0.01*abs(allequations.reseS)/allequations.neeq,0.5);
+  else if(score_type==4)  score=pow(allequations.restot4/(allequations.nrows-allequations.nspleq),0.25);
+  else if(score_type==8)  score=pow(allequations.restot8/(allequations.nrows-allequations.nspleq),0.125);
   else score=pow(allequations.restot2/(allequations.nrows-allequations.nspleq),0.5);
 
   if(fsmooth_spline){ 
@@ -406,13 +432,15 @@ double MyObjective(GAGenome& g) {
   
     if(allequations.vunknown[icoeff0+2] < 0.0) {
       checknan=false;
-      ascale+=1000; 
+      ascale+=1000.0; 
       if(endgen) cout<<"#Warning NAN"<< allequations.vpot[i].potname<<":  "<<allequations.vunknown[icoeff0+2]<<"  "<<maxderivative2nd<<endl;
     }
-    if(2.0*allequations.vunknown[icoeff0+2] < 0.999*maxderivative2nd) {
+    if(3.0*allequations.vunknown[icoeff0+2] < 0.999*maxderivative2nd) {
       checkexponential=false; 
-      ascale+=100; 
-      ascale += maxderivative2nd - 2.0*allequations.vunknown[icoeff0+2];
+      //cout<<"T1  "<<ascale<<endl;
+      ascale+=100.0; 
+      //cout<<"T2  "<<ascale<<endl;
+      ascale += maxderivative2nd - 3.0*allequations.vunknown[icoeff0+2];
       if(endgen) cout<<"#Warning Exponent"<< allequations.vpot[i].potname<<":  "<<allequations.vunknown[icoeff0+2]<<"  "<<maxderivative2nd<<endl;
     }
     if(!checkpotential && endgen)     cout<<"#Warning PotE"<< allequations.vpot[i].potname<<endl;
@@ -423,8 +451,12 @@ double MyObjective(GAGenome& g) {
 
     if(std::isnan(allequations.vpot[i].expA)||std::isnan(allequations.vpot[i].expB)||std::isnan(allequations.vpot[i].expC)){checknan=false;}
     if(std::isnan(allequations.vpot[i].expA)||std::isnan(allequations.vpot[i].expB)||std::isnan(allequations.vpot[i].expC)){checkexponential=false;}
-    if(!checknan) ascale+=1000; 
-    if(!checkexponential) ascale+=1000; 
+    if(!checknan) ascale+=1000.0; 
+    if(!checkexponential) {
+      //cout<<"T3  "<<ascale<<endl;
+      ascale+=1000.0;
+      //cout<<"T4  "<<ascale<<endl;
+    } 
 
     //if(std::isnan(allequations.vpot[i].expA)||std::isnan(allequations.vpot[i].expB)||std::isnan(allequations.vpot[i].expC)){checknan=false;}
     icoeff0 += (allequations.vpot[i].vr.size()-1)*(allequations.vpot[i].ordspl+1);
@@ -432,13 +464,16 @@ double MyObjective(GAGenome& g) {
   
   if(std::isnan(score)) score=999999999.9;
 
+  //cout<<"TFS  "<<score<<endl;
+  //cout<<"TF  "<<ascale<<endl;
+  //cout<<"TFF  "<<((1.0+ascale)*score)<<endl;
   return ((1.0+ascale)*score);
 }
 
 void MyInitializer(GAGenome& g) {
   GA1DArrayGenome<double>& genome = (GA1DArrayGenome<double>&)g;
   bool accept; 
-  int i,j,k,idx,nknots,ntmp; 
+  int i,j,k,idx,nknots,ntmp,ntrial; 
   double tmp;
   if(read_spline){
     for(i=0;i<allequations.vpot.size();i++){ 
@@ -466,7 +501,8 @@ void MyInitializer(GAGenome& g) {
       }
       for(j=1;j<nknots-1;j++){ 
         accept=false;
-        while(!accept){
+        ntrial=0;
+        while((!accept) && (ntrial<1000)){
           accept=true;
           tmp=GARandomFloat(svpot[i].minRbond+svpot[i].max_step,svpot[i].vr[nknots-1]-svpot[i].max_step);
           for(k=1;k<nknots;k++){
@@ -475,6 +511,7 @@ void MyInitializer(GAGenome& g) {
               break;
             }
           }
+          ntrial++;
         }
         allequations.vpot[i].vr[j]=tmp;
       }

@@ -134,45 +134,45 @@ void Molecule::init(const string& xyzfilename, const double ediss_, const double
     stmp=ctline;
     if(stmp.find("Hamiltonian")!=string::npos){
       if(ddh.td3){
-        outfile<<"Dispersion = DftD3{\n"; 
-        outfile<<"Damping = BeckeJohnson{\n"; 
+        outfile<<"  Dispersion = DftD3{\n"; 
+        outfile<<"    Damping = BeckeJohnson{\n"; 
         for(i=0;i<ddh.d3.size();i++){ 
           if(ddh.d3[i].name=="a1" ||ddh.d3[i].name=="a2"){
             outfile.precision(ddh.d3[i].precision);
-            outfile<<ddh.d3[i].name<<" = "<<ddh.d3[i].value<<endl;
+            outfile<<"      "<<ddh.d3[i].name<<" = "<<ddh.d3[i].value<<endl;
           }
         }
-        outfile<<"}\n"; 
+        outfile<<"    "<<"}\n"; 
         for(i=0;i<ddh.d3.size();i++){ 
           if(ddh.d3[i].name=="s6" ||ddh.d3[i].name=="s8"){
             outfile.precision(ddh.d3[i].precision);
-            outfile<<ddh.d3[i].name<<" = "<<ddh.d3[i].value<<endl;
+            outfile<<"    "<<ddh.d3[i].name<<" = "<<ddh.d3[i].value<<endl;
           }
         }
-        outfile<<"}\n"; 
+        outfile<<"  "<<"}\n"; 
       }
       if(ddh.tdamph){
-        outfile<<"DampXH = Yes\n"; 
+        outfile<<"  DampXH = Yes\n"; 
         outfile.precision(ddh.damph.precision);
-        outfile<<"DampXHExponent = "<<ddh.damph.value<<endl; 
+        outfile<<"  DampXHExponent = "<<ddh.damph.value<<endl; 
       }
       if(ddh.thubbardderivs){
-        if(ddh.thirdorderfull) outfile<<"ThirdOrderFull = Yes\n"; 
-        else  outfile<<"ThirdOrder = Yes\n"; 
-        outfile<<"HubbardDerivs {\n"; 
+        if(ddh.thirdorderfull) outfile<<"  ThirdOrderFull = Yes\n"; 
+        else  outfile<<"  ThirdOrder = Yes\n"; 
+        outfile<<"  HubbardDerivs{\n"; 
         for(i=0;i<ddh.hubbardderivs.size();i++){ 
           outfile.precision(ddh.hubbardderivs[i].precision);
-          outfile<<ddh.hubbardderivs[i].name<<" = "<<ddh.hubbardderivs[i].value<<endl;
+          outfile<<"    "<<ddh.hubbardderivs[i].name<<" = "<<ddh.hubbardderivs[i].value<<endl;
         }
-        outfile<<"}\n"; 
+        outfile<<"  "<<"}\n"; 
       }
       if(ddh.tdamphver2){
-        outfile<<"HCorrection = DampingVer2 {\n"; 
+        outfile<<"  HCorrection = DampingVer2{\n"; 
         for(i=0;i<ddh.damphver2.size();i++){ 
           outfile.precision(ddh.damphver2[i].precision);
-          outfile<<ddh.damphver2[i].name<<" = "<<ddh.damphver2[i].value<<endl;
+          outfile<<"    "<<ddh.damphver2[i].name<<" = "<<ddh.damphver2[i].value<<endl;
         }
-        outfile<<"}\n"; 
+        outfile<<"  "<<"}\n"; 
       }
     }
   }
