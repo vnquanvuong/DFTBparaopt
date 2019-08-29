@@ -320,52 +320,114 @@ void Allequations::writeout() const {
     //}
     //fdist.close();
   }else{
+        //cout<<fixed<<left<<setw(3)<< vmol[i].atomname[j] <<" "
+        //    <<right<<setprecision(6)<<setw(12)<<vres[ires] 
+        //    <<right<<setprecision(6)<<setw(12)<<vres[ires+1] 
+        //    <<right<<setprecision(6)<<setw(12)<<vres[ires+2] << endl; 
 
-    double mse,mad,max,size,tmp; 
+    double mse,mad,rmse,max,size,tmp; 
+    double msre,mard,rmsre,maxr,tmpr; 
     if (neeq>0){ 
-      cout << "energy equations (residual in kcal/mol)" << endl << fixed << setprecision(2)<<right;
-      mse=mad=max=size=0.0;
+      cout << fixed << "\nEnergy equations (residual in kcal/mol)" << endl;
+      cout << fixed <<right<< setw(10) << "Ref" <<right<< setw(10) << "Cal" <<right<< setw(10) << "Error" << endl;
+      cout << fixed << setprecision(2)<<right;
+      mse=mad=rmse=max=size=msre=mard=rmsre=maxr=tmpr=0.0;
       for (int imol=0; imol < allequations.vmol.size(); imol++){
         if (allequations.vmol[imol].eweight!=0){
           tmp=(allequations.vmol[imol].ebind-allequations.vmol[imol].teel)*kcal_H;
-          cout<<setw(10)<<-allequations.vmol[imol].ebind*kcal_H
-              <<setw(10)<<-allequations.vmol[imol].teel*kcal_H
-              <<setw(10)<<tmp<<"  "
-              <<allequations.vmol[imol].name <<endl; 
+          tmpr=-(allequations.vmol[imol].ebind-allequations.vmol[imol].teel)/allequations.vmol[imol].ebind;
+          cout<<fixed<<right<<setprecision(2)<<setw(10)<<-allequations.vmol[imol].ebind*kcal_H
+                     <<right<<setprecision(2)<<setw(10)<<-allequations.vmol[imol].teel*kcal_H
+                     <<right<<setprecision(2)<<setw(10)<<tmp<<"  "
+                     <<allequations.vmol[imol].name <<endl; 
           mse+=tmp;
+          rmse+=tmp*tmp;
           mad+=abs(tmp);
           if(abs(tmp)>max) max=abs(tmp);
+
+          msre+=tmpr;
+          rmsre+=tmpr*tmpr;
+          mard+=abs(tmpr);
+          if(abs(tmpr)>maxr) maxr=abs(tmpr);
+
           size+=1.0;
         }
       }
       mse/=size;
+      rmse/=size;
       mad/=size;  
+      rmse=sqrt(rmse);
+
+      msre/=size;
+      rmsre/=size;
+      mard/=size;  
+      rmsre=sqrt(rmsre);
+
+      msre*=100.0;
+      rmsre*=100.0;
+      mard*=100.0;  
+      maxr*=100.0;  
+
       cout<<"#\n";
-      cout<<left<<setw(10)<<"#"<<right<<setw(10)<<"MSE"<<setw(10)<<"MAD"<<setw(10)<<"MAX"<<"\n";
-      cout<<left<<setw(10)<<"#"<<right<<setw(10)<<mse<<setw(10)<<mad<<setw(10)<<max<<"\n";
+      cout<<fixed<<left<<setw(10)<<"#"<<right<<setw(10)<<"MSE"<<setw(10)<<"MAD"<<setw(10)<<"RMSE"<<setw(10)<<"MAX"<<"\n";
+      cout<<fixed<<left<<setw(10)<<"#"<<right<<setprecision(2)<<setw(10)<<mse<<setprecision(2)<<setw(10)<<mad<<setprecision(2)<<setw(10)<<rmse<<setprecision(2)<<setw(10)<<max<<"\n";
+      cout<<"#\n";
+
+      cout<<"#\n";
+      cout<<fixed<<left<<setw(10)<<"#"<<right<<setw(10)<<"MSRE"<<setw(10)<<"MARD"<<setw(10)<<"RMSRE"<<setw(10)<<"MAXR"<<"\n";
+      cout<<fixed<<left<<setw(10)<<"#"<<right<<setprecision(2)<<setw(10)<<msre<<setprecision(2)<<setw(10)<<mard<<setprecision(2)<<setw(10)<<rmsre<<setprecision(2)<<setw(10)<<maxr<<"\n";
       cout<<"#\n";
     }
     if(nreaeq>0){
-      cout << endl << "reaction equations (residual in kcal/mol)" << endl << fixed << setprecision(1);
-      mse=mad=max=size=0.0;
+      cout << fixed << "\nReaction equations (residual in kcal/mol)" << endl;
+      cout << fixed <<right<< setw(10) << "Ref" <<right<< setw(10) << "Cal" <<right<< setw(10) << "Error" << endl;
+      cout << fixed << setprecision(2)<<right;
+      mse=mad=rmse=max=size=msre=mard=rmsre=maxr=tmpr=0.0;
       for (int irea=0; irea < allequations.vrea.size(); irea++ ){
         if (allequations.vrea[irea].reaweight!=0){
           tmp=(allequations.vrea[irea].treaE-allequations.vrea[irea].reaE)*kcal_H;
-          cout<<setw(10)<<allequations.vrea[irea].reaE*kcal_H
-              <<setw(10)<<allequations.vrea[irea].treaE*kcal_H
-              <<setw(10)<<tmp<<"  "
-              <<allequations.vrea[irea].reastr<<endl; 
+          tmpr=(allequations.vrea[irea].treaE-allequations.vrea[irea].reaE)/allequations.vrea[irea].reaE;
+          cout<<fixed<<right<<setprecision(2)<<setw(10)<<allequations.vrea[irea].reaE*kcal_H
+                     <<right<<setprecision(2)<<setw(10)<<allequations.vrea[irea].treaE*kcal_H
+                     <<right<<setprecision(2)<<setw(10)<<tmp<<"  "
+                     <<allequations.vrea[irea].reastr<<endl; 
           mse+=tmp;
+          rmse+=tmp*tmp;
           mad+=abs(tmp);
           if(abs(tmp)>max) max=abs(tmp);
+
+          msre+=tmpr;
+          rmsre+=tmpr*tmpr;
+          mard+=abs(tmpr);
+          if(abs(tmpr)>maxr) maxr=abs(tmpr);
+
           size+=1.0;
         }
       }
       mse/=size;
+      rmse/=size;
       mad/=size;  
+      rmse=sqrt(rmse);
+
+      msre/=size;
+      rmsre/=size;
+      mard/=size;  
+      rmsre=sqrt(rmsre);
+
+      msre*=100.0;
+      rmsre*=100.0;
+      mard*=100.0;  
+      maxr*=100.0;  
+
       cout<<"#\n";
-      cout<<left<<setw(10)<<"#"<<right<<setw(10)<<"MSE"<<setw(10)<<"MAD"<<setw(10)<<"MAX"<<"\n";
-      cout<<left<<setw(10)<<"#"<<right<<setw(10)<<mse<<setw(10)<<mad<<setw(10)<<max<<"\n";
+      cout<<fixed<<setprecision(2);
+      cout<<fixed<<left<<setw(10)<<"#"<<right<<setw(10)<<"MSE"<<setw(10)<<"MAD"<<setw(10)<<"RMSE"<<setw(10)<<"MAX"<<"\n";
+      cout<<fixed<<left<<setw(10)<<"#"<<right<<setprecision(2)<<setw(10)<<mse<<setprecision(2)<<setw(10)<<mad<<setprecision(2)<<setw(10)<<rmse<<setprecision(2)<<setw(10)<<max<<"\n";
+      cout<<"#\n";
+
+      cout<<"#\n";
+      cout<<fixed<<left<<setw(10)<<"#"<<right<<setw(10)<<"MSRE"<<setw(10)<<"MARD"<<setw(10)<<"RMSRE"<<setw(10)<<"MAXR"<<"\n";
+      cout<<fixed<<left<<setw(10)<<"#"<<right<<setprecision(2)<<setw(10)<<msre<<setprecision(2)<<setw(10)<<mard<<setprecision(2)<<setw(10)<<rmsre<<setprecision(2)<<setw(10)<<maxr<<"\n";
       cout<<"#\n";
     }
   }

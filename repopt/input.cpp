@@ -16,6 +16,8 @@ extern int    score_type,preserved_num,destroy_num,popsizemin,seed;
 extern bool   ga,read_spline,fsmooth_spline,aa_spline;
 extern bool   fderivative1st,fderivative2nd,fderivative3rd;
 extern bool   runtest,grid_update;
+extern bool   runxtb,runmopac;
+extern string xtbarg,xtbarg2,mopacarg;
 extern sddh   ddh;
 
 void Allequations::readinp(const string inputfile){
@@ -47,11 +49,14 @@ void Allequations::readinp(const string inputfile){
           if(stemp.find("$end")!=string::npos) break;
           if(sscanf(cline,"%s",ctemp)<0) continue;
           if(ctemp[0]=='#' ) continue;
-          if(stemp.find("dftb_version ")!=string::npos) sscanf(cline,"%s %s",ctemp1,ctemp2); dftbversion=ctemp2;
+          if(stemp.find("dftb_version ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); dftbversion=ctemp2;}
           if(stemp.find("dftbout_new ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&dftbout_new);
           if(stemp.find("ilmsfit ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&ilmsfit);
           if(stemp.find("idecompose ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&idecompose);
           if(stemp.find("nreplicate ")!=string::npos) sscanf(cline,"%s %d",ctemp1,&nreplicate);
+          if(stemp.find("xtbarg ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); xtbarg=ctemp2; runxtb=true;}
+          if(stemp.find("xtbarg2 ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); xtbarg2=ctemp2; runxtb=true;}
+          if(stemp.find("mopacarg ")!=string::npos){ sscanf(cline,"%s %s",ctemp1,ctemp2); mopacarg=ctemp2; runmopac=true;}
           if(stemp.find("s1 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s1);
           if(stemp.find("s2 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s2);
           if(stemp.find("s3 ")!=string::npos) sscanf(cline,"%s %le",ctemp1,&s3);
@@ -252,7 +257,8 @@ void Allequations::readinp(const string inputfile){
             exit(1);
           }
           vadd[nadd].potname = potname;
-          vadd[nadd].dist = vadd[nadd].dist / AA_Bohr;
+          //vadd[nadd].dist = vadd[nadd].dist / AA_Bohr;
+          vadd[nadd].dist = vadd[nadd].dist;
           if (vadd[nadd].deriv > 3 ) {
             cerr << "ERROR: " << endl << endl;
             cerr << "additional equations can only be added for 0st,1st,2nd or 3rd dervative (0,1,2,3)!" 
@@ -274,7 +280,7 @@ void Allequations::readinp(const string inputfile){
           str=ctemp1;
           ifnotfile(str.c_str());
           dftbin=ctemp2;
-          ifnotfile(dftbin.c_str());
+          if(!runxtb) ifnotfile(dftbin.c_str());
           finp=ctemp3;
           if (finp != "0") ifnotfile(finp.c_str());
           vmol[nmol].init(str,ediss,eweight,fweight,dftbin," ",dftbversion,finp);
@@ -296,7 +302,7 @@ void Allequations::readinp(const string inputfile){
           filename=ctemp2;
           ifnotfile(filename.c_str());
           dftbin=ctemp3;
-          ifnotfile(dftbin.c_str());
+          if(!runxtb) ifnotfile(dftbin.c_str());
           for (i=0; i<vmol.size(); i++){
             if (filename == vmol[i].name){
               vreamol[nabbr] = vmol[i];
@@ -377,7 +383,7 @@ void Allequations::rereadmol(const string inputfile){
           str=ctemp1;
           ifnotfile(str.c_str());
           dftbin=ctemp2;
-          ifnotfile(dftbin.c_str());
+          if(!runxtb) ifnotfile(dftbin.c_str());
           finp=ctemp3;
           if (finp != "0") ifnotfile(finp.c_str());
           vmol[nmol].init(str,ediss,eweight,fweight,dftbin," ",dftbversion,finp);
@@ -400,7 +406,7 @@ void Allequations::rereadmol(const string inputfile){
           filename=ctemp2;
           ifnotfile(filename.c_str());
           dftbin=ctemp3;
-          ifnotfile(dftbin.c_str());
+          if(!runxtb) ifnotfile(dftbin.c_str());
           for (i=0; i<vmol.size(); i++){
             if (filename == vmol[i].name){
               vreamol[nabbr] = vmol[i];

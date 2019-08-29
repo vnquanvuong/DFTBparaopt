@@ -20,10 +20,12 @@ using namespace std;
 bool   ga=true,read_spline=true,fsmooth_spline=true,aa_spline=true;
 bool   fderivative1st=true,fderivative2nd=true,fderivative3rd=false;
 bool   runtest=false,endgen=false,grid_update=true;
+bool   runxtb=false,runmopac=false;
+string xtbarg="",xtbarg2="",mopacarg="";
 int    ga_popsize=3000,ga_ngen=1000,ga_scoref=1,ga_flushf=1;
 int    score_type=2,preserved_num=300,destroy_num=30,popsizemin=2,seed=0;
 double ga_pmut=0.2,ga_pcross=0.9,gauss_dev=0.025,gtol=0.000001,deltar=0.0001; 
-int    ilmsfit=4,idecompose=6,nreplicate=1,dftbout_new=0;
+int    ilmsfit=4,idecompose=6,nreplicate=1,dftbout_new=0,index4molecule=0;
 double s1=2.0,s2=2.0,s3=2.0,s4=2.0,s5=2.0,s6=2.0,s7=2.0,s8=2.0,s9=2.0;
 double max_step01=0.22;
 
@@ -502,7 +504,7 @@ void MyInitializer(GAGenome& g) {
       for(j=1;j<nknots-1;j++){ 
         accept=false;
         ntrial=0;
-        while((!accept) && (ntrial<1000)){
+        while((!accept) && (ntrial<10000)){
           accept=true;
           tmp=GARandomFloat(svpot[i].minRbond+svpot[i].max_step,svpot[i].vr[nknots-1]-svpot[i].max_step);
           for(k=1;k<nknots;k++){

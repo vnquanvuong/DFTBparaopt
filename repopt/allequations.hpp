@@ -36,6 +36,7 @@ public:
   bool      pbc;
   int       pbctype;
 
+  vector<string> atomname0;
   vector<string> atomname;
   vector<string> elemname;
   vector<string> elemnameext;
@@ -52,6 +53,8 @@ public:
 
 private:
   void writegen(const string& filename);
+  void writexyz(const string& filename);
+  void writemop(const string& filename);
 };
 
 class Potential {
