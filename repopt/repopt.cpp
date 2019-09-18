@@ -27,7 +27,7 @@ int    score_type=2,preserved_num=300,destroy_num=30,popsizemin=2,seed=0;
 double ga_pmut=0.2,ga_pcross=0.9,gauss_dev=0.025,gtol=0.000001,deltar=0.0001; 
 int    ilmsfit=4,idecompose=6,nreplicate=1,dftbout_new=0,index4molecule=0;
 double s1=2.0,s2=2.0,s3=2.0,s4=2.0,s5=2.0,s6=2.0,s7=2.0,s8=2.0,s9=2.0;
-double max_step01=0.22;
+double min_step01=0.22;
 
 sddh         ddh;
 vector<spot> svpot; 
@@ -44,7 +44,6 @@ int main(int argc, char** argv){
   int i,j,length,k,idx; 
   double tmp;
   Timer gtime;
-  max_step01=max_step01/AA_Bohr;
   ddh.td3=ddh.tdamph=ddh.thubbardderivs=ddh.thirdorderfull=ddh.tdamphver2=false;
   if ( argc < 2 ){
     cerr << "usage: repopt inputfile" << endl;
@@ -52,6 +51,8 @@ int main(int argc, char** argv){
   }
   inputfilename = argv[1];
   allequations.prepare(inputfilename.c_str());
+
+  min_step01=min_step01/AA_Bohr;
 
   if(ga && !runtest){
     GARandomSeed(seed);
@@ -275,13 +276,13 @@ double MyObjective(GAGenome& g) {
 
   //for(j=1;j<nknots-1;j++){ 
   //  allequations.vpot[i].vr[j] = GAMin(svpot[i].vr[nknots-1]-svpot[i].max_step, allequations.vpot[i].vr[j]);
-  //  allequations.vpot[i].vr[j] = GAMax(allequations.vpot[i].vr[0]+max_step01, allequations.vpot[i].vr[j]);
+  //  allequations.vpot[i].vr[j] = GAMax(allequations.vpot[i].vr[0]+min_step01, allequations.vpot[i].vr[j]);
   //}
 
     for(j=1;j<nknots-1;j++){ 
       allequations.vpot[i].vr[j] = GAMin(svpot[i].vr[nknots-1]-svpot[i].max_step, allequations.vpot[i].vr[j]);
     //allequations.vpot[i].vr[j] = GAMax(svpot[i].minRbond+svpot[i].max_step, allequations.vpot[i].vr[j]);
-      allequations.vpot[i].vr[j] = GAMax(svpot[i].minRbond+max_step01, allequations.vpot[i].vr[j]);
+      allequations.vpot[i].vr[j] = GAMax(svpot[i].minRbond+min_step01, allequations.vpot[i].vr[j]);
     }
   
     for(j=1;j<nknots-1;j++){ 
@@ -302,7 +303,7 @@ double MyObjective(GAGenome& g) {
     for(j=1;j<nknots-1;j++){ 
       allequations.vpot[i].vr[j] = GAMin(svpot[i].vr[nknots-1]-svpot[i].max_step, allequations.vpot[i].vr[j]);
     //allequations.vpot[i].vr[j] = GAMax(svpot[i].minRbond+svpot[i].max_step, allequations.vpot[i].vr[j]);
-      allequations.vpot[i].vr[j] = GAMax(svpot[i].minRbond+max_step01, allequations.vpot[i].vr[j]);
+      allequations.vpot[i].vr[j] = GAMax(svpot[i].minRbond+min_step01, allequations.vpot[i].vr[j]);
     }
   
     for(j=1;j<nknots-1;j++){ 
